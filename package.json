@@ -1,0 +1,59 @@
+{
+  "name": "stationeers-webportal",
+  "version": "1.0.0",
+  "description": "A web interface for controlling Stationeers servers.  Companion to stationeers-webapi.",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "cross-env NODE_ENV=production webpack",
+    "start": "cross-env NODE_ENV=development webpack-dev-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RoboPhred/stationeers-webportal.git"
+  },
+  "keywords": [
+    "Stationeers",
+    "WebAPI"
+  ],
+  "author": "robophred@gmail.com",
+  "license": "AGPL",
+  "bugs": {
+    "url": "https://github.com/RoboPhred/stationeers-webportal/issues"
+  },
+  "homepage": "https://github.com/RoboPhred/stationeers-webportal#readme",
+  "devDependencies": {
+    "@types/query-string": "^6.3.0",
+    "@types/react": "^16.9.23",
+    "@types/react-dom": "^16.9.5",
+    "@types/react-router": "^5.1.4",
+    "@types/react-router-dom": "^5.1.3",
+    "@types/whatwg-fetch": "0.0.33",
+    "cross-env": "^7.0.2",
+    "css-loader": "^3.4.2",
+    "file-loader": "^5.1.0",
+    "html-webpack-plugin": "^3.2.0",
+    "raw-loader": "^4.0.0",
+    "rimraf": "^3.0.2",
+    "source-map-loader": "^0.2.4",
+    "style-loader": "^1.1.3",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.8.3",
+    "url-loader": "^3.0.0",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.9.5",
+    "es6-promise": "^4.2.8",
+    "query-string": "^6.11.1",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
+    "ts-custom-error": "^3.1.1",
+    "typeface-roboto": "0.0.75",
+    "whatwg-fetch": "^3.0.0"
+  }
+}
