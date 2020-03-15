@@ -9,6 +9,8 @@ import ItemsPage from "@/pages/ItemsPage";
 import PlayersPage from "@/pages/PlayersPage";
 import ServerPage from "@/pages/ServerPage";
 
+export const AUTHENTICATION_CALLBACK_ROUTE = "authentication-callback";
+
 const Routes: React.FC = () => (
   <Switch>
     <Route path="/authenticate" exact component={AuthenticatePage} />

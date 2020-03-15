@@ -11,7 +11,7 @@ const AuthenticatePage: React.FC = () => {
   const { t } = useTranslation();
 
   const onLoginClick = React.useCallback(() => {
-    window.location.href = createSteamLoginOpenIdUrl("authentication-callback");
+    window.location.href = createSteamLoginOpenIdUrl();
   }, []);
 
   return (

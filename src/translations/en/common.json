@@ -2,7 +2,7 @@
   "pages": {
     "authenticate": {
       "title": "Authenticate with Steam",
-      "login": "Login to Steam"
+      "login_button": "Login to Steam"
     },
     "connect": {
       "title": "Connect to Server",

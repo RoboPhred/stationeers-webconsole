@@ -1,5 +1,7 @@
 import { stringify } from "query-string";
 
+import { AUTHENTICATION_CALLBACK_ROUTE } from "@/routes";
+
 import { WebAPIError } from "./errors";
 import {
   ServerPayload,
@@ -9,9 +11,9 @@ import {
   ItemPayload
 } from "./payloads";
 
-export function createSteamLoginOpenIdUrl(loginRoute: string): string {
+export function createSteamLoginOpenIdUrl(): string {
   var returnTo = new URL(PUBLIC_URL);
-  returnTo.hash = loginRoute;
+  returnTo.hash = AUTHENTICATION_CALLBACK_ROUTE;
 
   const query = {
     "openid.ns": "http://specs.openid.net/auth/2.0",
