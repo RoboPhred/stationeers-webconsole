@@ -1,0 +1,19 @@
+{
+  "pages": {
+    "authenticate": {
+      "title": "Authenticate with Steam",
+      "login": "Login to Steam"
+    },
+    "connect": {
+      "title": "Connect to Server",
+      "server_address": "Server Address"
+    },
+    "authentication-callback": {
+      "title": "Authenticating"
+    },
+    "devices": {
+      "title": "Devices"
+    }
+  },
+  "view-github": "View project on GitHub"
+}

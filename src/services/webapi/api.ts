@@ -33,6 +33,7 @@ export async function authenticate(
 
   const result: LoginPayload = await response.json();
   // Doesn't work.  CORS?
+  // Sending it by body now.
   //result.authorization = response.headers.get("Authorization")!;
   return result;
 }
