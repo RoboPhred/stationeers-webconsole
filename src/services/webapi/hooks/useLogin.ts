@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { createSteamLoginRedirectUrl, authenticate } from "../api";
+import { createSteamLoginOpenIdUrl, authenticate } from "../api";
 import { LoginPayload } from "../payloads";
 
 export type LoginStatus = "idle" | "logging-in" | "success" | "error";
@@ -19,7 +19,7 @@ export function useLogin(
     if (loginStatus != "idle") {
       return;
     }
-    window.location.href = createSteamLoginRedirectUrl("login");
+    window.location.href = createSteamLoginOpenIdUrl("login");
   }, [loginStatus]);
 
   React.useEffect(() => {

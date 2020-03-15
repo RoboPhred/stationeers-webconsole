@@ -1,9 +1,9 @@
 import { stringify } from "query-string";
 
 import { WebAPIError } from "./errors";
-import { LoginPayload } from "./payloads";
+import { LoginPayload, DevicePayload } from "./payloads";
 
-export function createSteamLoginRedirectUrl(loginRoute: string): string {
+export function createSteamLoginOpenIdUrl(loginRoute: string): string {
   var returnTo = new URL(PUBLIC_URL);
   returnTo.hash = loginRoute;
 
@@ -32,5 +32,28 @@ export async function authenticate(
   }
 
   const result: LoginPayload = await response.json();
+  // Doesn't work.  CORS?
+  //result.authorization = response.headers.get("Authorization")!;
+  return result;
+}
+
+export async function getDevices(
+  webapiServerUrl: string,
+  authorization: string
+): Promise<DevicePayload[]> {
+  const url = new URL(webapiServerUrl);
+  url.pathname = "devices";
+
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${authorization}`
+    }
+  });
+  if (response.status !== 200) {
+    throw new WebAPIError(response.status, response.statusText);
+  }
+
+  const result: DevicePayload[] = await response.json();
   return result;
 }
