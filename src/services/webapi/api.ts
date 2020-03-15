@@ -5,7 +5,8 @@ import {
   ServerPayload,
   LoginPayload,
   DevicePayload,
-  PlayerPayload
+  PlayerPayload,
+  ItemPayload
 } from "./payloads";
 
 export function createSteamLoginOpenIdUrl(loginRoute: string): string {
@@ -64,6 +65,27 @@ export async function getServer(
   return result;
 }
 
+export async function getPlayers(
+  webapiServerUrl: string,
+  authorization: string
+): Promise<PlayerPayload[]> {
+  const url = new URL(webapiServerUrl);
+  url.pathname = "players";
+
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${authorization}`
+    }
+  });
+  if (response.status !== 200) {
+    throw new WebAPIError(response.status, response.statusText);
+  }
+
+  const result: PlayerPayload[] = await response.json();
+  return result;
+}
+
 export async function getDevices(
   webapiServerUrl: string,
   authorization: string
@@ -85,12 +107,12 @@ export async function getDevices(
   return result;
 }
 
-export async function getPlayers(
+export async function getItems(
   webapiServerUrl: string,
   authorization: string
-): Promise<PlayerPayload[]> {
+): Promise<ItemPayload[]> {
   const url = new URL(webapiServerUrl);
-  url.pathname = "players";
+  url.pathname = "items";
 
   const response = await fetch(url.toString(), {
     method: "GET",
@@ -102,6 +124,6 @@ export async function getPlayers(
     throw new WebAPIError(response.status, response.statusText);
   }
 
-  const result: PlayerPayload[] = await response.json();
+  const result: ItemPayload[] = await response.json();
   return result;
 }

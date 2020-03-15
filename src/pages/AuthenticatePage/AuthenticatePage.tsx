@@ -16,7 +16,9 @@ const AuthenticatePage: React.FC = () => {
 
   return (
     <PageContainer title={t("pages.authenticate.title")}>
-      <Button onClick={onLoginClick}>{t("pages.authenticate.login")}</Button>
+      <Button onClick={onLoginClick}>
+        {t("pages.authenticate.login_button")}
+      </Button>
     </PageContainer>
   );
 };

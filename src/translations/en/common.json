@@ -23,6 +23,9 @@
     },
     "devices": {
       "title": "Devices"
+    },
+    "items": {
+      "title": "Items"
     }
   },
   "verbs": {

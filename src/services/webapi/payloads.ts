@@ -29,3 +29,9 @@ export interface DevicePayload extends ThingPayload {
   logicValues: Record<string, number>;
   slotValues: Record<number, Record<string, number>>;
 }
+
+export interface ItemPayload extends ThingPayload {
+  parentSlotReferenceId: string;
+  parentSlotId: number;
+  quantityText: string;
+}
