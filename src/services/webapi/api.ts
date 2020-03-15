@@ -1,7 +1,12 @@
 import { stringify } from "query-string";
 
 import { WebAPIError } from "./errors";
-import { LoginPayload, DevicePayload, PlayerPayload } from "./payloads";
+import {
+  ServerPayload,
+  LoginPayload,
+  DevicePayload,
+  PlayerPayload
+} from "./payloads";
 
 export function createSteamLoginOpenIdUrl(loginRoute: string): string {
   var returnTo = new URL(PUBLIC_URL);
@@ -35,6 +40,27 @@ export async function authenticate(
   // Doesn't work.  CORS?
   // Sending it by body now.
   //result.authorization = response.headers.get("Authorization")!;
+  return result;
+}
+
+export async function getServer(
+  webapiServerUrl: string,
+  authorization: string
+): Promise<ServerPayload> {
+  const url = new URL(webapiServerUrl);
+  url.pathname = "server";
+
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${authorization}`
+    }
+  });
+  if (response.status !== 200) {
+    throw new WebAPIError(response.status, response.statusText);
+  }
+
+  const result: ServerPayload = await response.json();
   return result;
 }
 

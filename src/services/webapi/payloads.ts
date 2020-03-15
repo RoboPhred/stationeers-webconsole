@@ -3,6 +3,12 @@ export interface LoginPayload {
   authorization: string;
 }
 
+export interface ServerPayload {
+  name: string;
+  mapName: string;
+  maxPlayers: number;
+  password: string;
+}
 export interface PlayerPayload {
   steamName: string;
   steamId: string;

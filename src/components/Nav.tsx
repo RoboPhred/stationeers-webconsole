@@ -15,15 +15,15 @@ const Nav: React.FC = () => {
   const isAuthorized = useSelector(isAuthorizedSelector);
   return (
     <List component="nav">
-      {NavItems.map(({ name, path, i18nKey, requireWebapiConnection }) => (
+      {NavItems.map(({ path, i18nKey, requireWebapiConnection }) => (
         <ListItemLink
-          key={name}
+          key={path}
           to={path}
           button
           autoselect
           disabled={requireWebapiConnection && !isAuthorized}
         >
-          <ListItemText>{t(i18nKey, { default: name })}</ListItemText>
+          <ListItemText>{t(i18nKey)}</ListItemText>
         </ListItemLink>
       ))}
     </List>

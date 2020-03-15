@@ -23,7 +23,7 @@ const AuthenticationCallbackPage: React.FC<Props> = ({
 
   return (
     <PageContainer title={t("pages.authentication-callback.title")}>
-      Authenticating...
+      {t("verbs.authenticating")}
     </PageContainer>
   );
 };

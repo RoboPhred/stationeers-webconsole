@@ -6,6 +6,7 @@ import AuthenticationCallbackPage from "@/pages/AuthenticationCallbackPage";
 import ConnectPage from "@/pages/ConnectPage";
 import DevicesPage from "@/pages/DevicesPage";
 import PlayersPage from "@/pages/PlayersPage";
+import ServerPage from "@/pages/ServerPage";
 
 const Routes: React.FC = () => (
   <Switch>
@@ -16,6 +17,7 @@ const Routes: React.FC = () => (
       component={AuthenticationCallbackPage}
     />
     <Route path="/connect" exact component={ConnectPage} />
+    <Route path="/server" exact component={ServerPage} />
     <Route path="/players" exact component={PlayersPage} />
     <Route path="/devices" exact component={DevicesPage} />
     <Redirect to="/authenticate" />

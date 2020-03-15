@@ -11,12 +11,23 @@
     "authentication-callback": {
       "title": "Authenticating"
     },
+    "server": {
+      "title": "Server",
+      "server_name": "Server Name",
+      "map_name": "Map Name",
+      "max_players": "Max Players",
+      "password": "Password"
+    },
     "players": {
       "title": "Players"
     },
     "devices": {
       "title": "Devices"
     }
+  },
+  "verbs": {
+    "loading": "Loading",
+    "authenticating": "Authenticating"
   },
   "view-github": "View project on GitHub"
 }

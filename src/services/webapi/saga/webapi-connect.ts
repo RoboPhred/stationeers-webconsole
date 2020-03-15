@@ -26,7 +26,7 @@ function* handleWebapiConnectAction(action: WebapiConnectAction) {
       authQuery
     );
     yield put(webapiAuthenticated(payload.authorization));
-    yield put(replace("/devices"));
+    yield put(replace("/server"));
   } catch (e) {
     // TODO: Show user
     console.error(e);

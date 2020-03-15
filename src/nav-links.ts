@@ -1,5 +1,4 @@
 export interface NavItem {
-  name: string;
   path: string;
   i18nKey: string;
   requireWebapiConnection?: boolean;
@@ -7,13 +6,16 @@ export interface NavItem {
 
 const NavItems: NavItem[] = [
   {
-    name: "Players",
+    path: "/server",
+    i18nKey: "pages.server.title",
+    requireWebapiConnection: true
+  },
+  {
     path: "/players",
     i18nKey: "pages.players.title",
     requireWebapiConnection: true
   },
   {
-    name: "Devices",
     path: "/devices",
     i18nKey: "pages.devices.title",
     requireWebapiConnection: true
