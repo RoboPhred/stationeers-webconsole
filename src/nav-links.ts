@@ -7,6 +7,12 @@ export interface NavItem {
 
 const NavItems: NavItem[] = [
   {
+    name: "Players",
+    path: "/players",
+    i18nKey: "pages.players.title",
+    requireWebapiConnection: true
+  },
+  {
     name: "Devices",
     path: "/devices",
     i18nKey: "pages.devices.title",

@@ -1,7 +1,7 @@
 import { stringify } from "query-string";
 
 import { WebAPIError } from "./errors";
-import { LoginPayload, DevicePayload } from "./payloads";
+import { LoginPayload, DevicePayload, PlayerPayload } from "./payloads";
 
 export function createSteamLoginOpenIdUrl(loginRoute: string): string {
   var returnTo = new URL(PUBLIC_URL);
@@ -56,5 +56,26 @@ export async function getDevices(
   }
 
   const result: DevicePayload[] = await response.json();
+  return result;
+}
+
+export async function getPlayers(
+  webapiServerUrl: string,
+  authorization: string
+): Promise<PlayerPayload[]> {
+  const url = new URL(webapiServerUrl);
+  url.pathname = "players";
+
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${authorization}`
+    }
+  });
+  if (response.status !== 200) {
+    throw new WebAPIError(response.status, response.statusText);
+  }
+
+  const result: PlayerPayload[] = await response.json();
   return result;
 }

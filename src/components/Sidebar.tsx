@@ -33,7 +33,7 @@ const Sidebar: React.FC<Props> = ({ className }) => {
     <div className={className}>
       <div className={classes.toolbar}>
         <Typography variant="h6" color="textSecondary">
-          Stationeers WebConsole
+          WebStation
         </Typography>
         <GithubButton className={classes.ghButton} />
       </div>

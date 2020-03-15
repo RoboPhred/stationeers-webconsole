@@ -3,6 +3,11 @@ export interface LoginPayload {
   authorization: string;
 }
 
+export interface PlayerPayload {
+  steamName: string;
+  steamId: string;
+}
+
 export interface ThingPayload {
   referenceId: string;
   prefabHash: number;

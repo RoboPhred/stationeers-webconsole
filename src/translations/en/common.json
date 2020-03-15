@@ -11,6 +11,9 @@
     "authentication-callback": {
       "title": "Authenticating"
     },
+    "players": {
+      "title": "Players"
+    },
     "devices": {
       "title": "Devices"
     }
