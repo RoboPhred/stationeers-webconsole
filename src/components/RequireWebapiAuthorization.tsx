@@ -5,7 +5,7 @@ import { Redirect } from "react-router-dom";
 
 import { isAuthorizedSelector } from "@/services/webapi/selectors/authorization";
 
-const RequireAuthorization: React.FC = () => {
+const RequireWebapiAuthorization: React.FC = () => {
   const hasAuthorization = useSelector(isAuthorizedSelector);
   if (!hasAuthorization) {
     return <Redirect to="/authenticate" />;
@@ -13,4 +13,4 @@ const RequireAuthorization: React.FC = () => {
   return null;
 };
 
-export default RequireAuthorization;
+export default RequireWebapiAuthorization;
