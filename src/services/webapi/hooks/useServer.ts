@@ -4,31 +4,74 @@ import { useSelector } from "react-redux";
 import { ServerPayload } from "../payloads";
 import { serverAddressSelector } from "../selectors/server";
 import { authorizationSelector } from "../selectors/authorization";
-import { getServer } from "../api";
+import { getServer, postServer } from "../api";
 
-export function useServer(): ServerPayload | null {
+export interface UseServerNoData {
+  isLoaded: false;
+  errorMessage: string | null;
+}
+export interface UseServerData extends ServerPayload {
+  isLoaded: true;
+  errorMessage: string | null;
+  setName(name: string): void;
+}
+
+export type UseServer = UseServerNoData | UseServerData;
+
+export function useServer(): UseServer {
   const serverAddress = useSelector(serverAddressSelector);
   const authorization = useSelector(authorizationSelector);
 
+  const [errorMessage, setError] = React.useState<string | null>(null);
   const [server, setServer] = React.useState<ServerPayload | null>(null);
 
-  React.useEffect(() => {
-    async function fetchServer() {
+  async function fetchServer() {
+    if (!serverAddress || !authorization) {
+      return;
+    }
+
+    try {
+      const server = await getServer(serverAddress, authorization);
+      setServer(server);
+    } catch (e) {
+      // TODO: Show error to user
+      console.error(e);
+    }
+  }
+
+  const postCurrentServer = React.useCallback(
+    async (body: Partial<ServerPayload>) => {
       if (!serverAddress || !authorization) {
         return;
       }
+      const server = await postServer(serverAddress, authorization, body);
+      setServer(server);
+    },
+    [serverAddress, authorization]
+  );
 
-      try {
-        const players = await getServer(serverAddress, authorization);
-        setServer(players);
-      } catch (e) {
-        // TODO: Show error to user
-        console.error(e);
-      }
-    }
-
+  React.useEffect(() => {
     fetchServer();
   }, []);
 
-  return server;
+  const setName = React.useCallback(
+    (name: string) => {
+      postCurrentServer({ name });
+    },
+    [postServer]
+  );
+
+  if (!server) {
+    return {
+      isLoaded: false,
+      errorMessage
+    };
+  }
+
+  return {
+    isLoaded: true,
+    errorMessage,
+    ...server,
+    setName
+  };
 }

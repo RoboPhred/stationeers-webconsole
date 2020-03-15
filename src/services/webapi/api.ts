@@ -67,6 +67,29 @@ export async function getServer(
   return result;
 }
 
+export async function postServer(
+  webapiServerUrl: string,
+  authorization: string,
+  body: Partial<ServerPayload>
+): Promise<ServerPayload> {
+  const url = new URL(webapiServerUrl);
+  url.pathname = "server";
+
+  const response = await fetch(url.toString(), {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${authorization}`
+    },
+    body: JSON.stringify(body)
+  });
+  if (response.status !== 200) {
+    throw new WebAPIError(response.status, response.statusText);
+  }
+
+  const result: ServerPayload = await response.json();
+  return result;
+}
+
 export async function getPlayers(
   webapiServerUrl: string,
   authorization: string
@@ -86,6 +109,51 @@ export async function getPlayers(
 
   const result: PlayerPayload[] = await response.json();
   return result;
+}
+
+export async function kickPlayer(
+  webapiServerUrl: string,
+  authorization: string,
+  steamId: string,
+  reason: string | null
+): Promise<void> {
+  const url = new URL(webapiServerUrl);
+  url.pathname = `players/${steamId}/kick`;
+
+  const response = await fetch(url.toString(), {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${authorization}`
+    },
+    body: JSON.stringify({ reason })
+  });
+  if (response.status !== 200) {
+    throw new WebAPIError(response.status, response.statusText);
+  }
+  return;
+}
+
+export async function banPlayer(
+  webapiServerUrl: string,
+  authorization: string,
+  steamId: string,
+  reason: string | null,
+  duration: number = 1
+): Promise<void> {
+  const url = new URL(webapiServerUrl);
+  url.pathname = `players/${steamId}/ban`;
+
+  const response = await fetch(url.toString(), {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${authorization}`
+    },
+    body: JSON.stringify({ reason, duration })
+  });
+  if (response.status !== 200) {
+    throw new WebAPIError(response.status, response.statusText);
+  }
+  return;
 }
 
 export async function getDevices(

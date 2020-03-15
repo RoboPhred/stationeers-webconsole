@@ -6,7 +6,6 @@ import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 
 import Nav from "./Nav";
-import GithubButton from "./GithubButton";
 
 export interface SidebarProps {
   className?: string;
@@ -35,7 +34,6 @@ const Sidebar: React.FC<Props> = ({ className }) => {
         <Typography variant="h6" color="textSecondary">
           WebStation
         </Typography>
-        <GithubButton className={classes.ghButton} />
       </div>
       <Divider />
       <Nav />

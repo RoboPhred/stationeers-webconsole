@@ -16,10 +16,23 @@
       "server_name": "Server Name",
       "map_name": "Map Name",
       "max_players": "Max Players",
-      "password": "Password"
+      "password": "Password",
+      "verbs": {
+        "edit_server_name": "Edit Server Name"
+      }
     },
     "players": {
-      "title": "Players"
+      "title": "Players",
+      "kick_ban_reason": "Reason",
+      "kick_named_player": "Kick player \"{{steamName}}\" ({{steamId}})",
+      "ban_named_player": "Ban player \"{{steamName}}\" ({{steamId}})",
+      "kick_player_confirm": "Are you sure you want to kick this player?",
+      "ban_player_confirm": "Are you sure you want to ban this player?",
+      "ban_duration": "Ban Duration (hours)",
+      "verbs": {
+        "kick_player": "Kick Player",
+        "ban_player": "Ban Player"
+      }
     },
     "devices": {
       "title": "Devices"
@@ -30,7 +43,13 @@
   },
   "verbs": {
     "loading": "Loading",
-    "authenticating": "Authenticating"
+    "authenticating": "Authenticating",
+    "edit": "Edit",
+    "commit": "Commit",
+    "confirm": "Confirm"
+  },
+  "errors": {
+    "must_be_number": "Value must be a number."
   },
   "view-github": "View project on GitHub"
 }

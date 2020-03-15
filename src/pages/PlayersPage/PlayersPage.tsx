@@ -16,6 +16,9 @@ import { usePlayers } from "@/services/webapi/hooks/usePlayers";
 import PageContainer from "@/components/PageContainer";
 import RequireWebapiAuthorization from "@/components/RequireWebapiAuthorization";
 
+import KickButton from "./components/KickButton";
+import BanButton from "./components/BanButton";
+
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     width: "100%",
@@ -27,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const PlayersPage: React.FC = () => {
   const { t } = useTranslation();
   const classes = useStyles();
-  const players = usePlayers();
+  const { players, kickPlayer, banPlayer } = usePlayers();
 
   return (
     <PageContainer title={t("pages.players.title")}>
@@ -39,7 +42,7 @@ const PlayersPage: React.FC = () => {
               <TableRow>
                 <TableCell>Player Name</TableCell>
                 <TableCell align="right">Steam ID</TableCell>
-                <TableCell>Actions</TableCell>
+                <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -47,7 +50,18 @@ const PlayersPage: React.FC = () => {
                 <TableRow key={player.steamId}>
                   <TableCell>{player.steamName}</TableCell>
                   <TableCell align="right">{player.steamId}</TableCell>
-                  <TableCell>[x]</TableCell>
+                  <TableCell align="right">
+                    <KickButton
+                      steamName={player.steamName}
+                      steamId={player.steamId}
+                      kickPlayer={kickPlayer}
+                    />
+                    <BanButton
+                      steamName={player.steamName}
+                      steamId={player.steamId}
+                      banPlayer={banPlayer}
+                    />
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
