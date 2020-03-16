@@ -12,6 +12,10 @@ export interface ServerPayload {
 export interface PlayerPayload {
   steamName: string;
   steamId: string;
+  playerName: string;
+  playTime: number;
+  ping: number;
+  score: number;
 }
 
 export interface ThingPayload {

@@ -43,6 +43,8 @@ const PlayersPage: React.FC = () => {
               <TableRow>
                 <TableCell>Player Name</TableCell>
                 <TableCell align="right">Steam ID</TableCell>
+                <TableCell align="right">Play Time (Minutes)</TableCell>
+                <TableCell align="right">Ping</TableCell>
                 <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
@@ -51,6 +53,10 @@ const PlayersPage: React.FC = () => {
                 <TableRow key={player.steamId}>
                   <TableCell>{player.steamName}</TableCell>
                   <TableCell align="right">{player.steamId}</TableCell>
+                  <TableCell align="right">
+                    {(player.playTime / 1000 / 60).toFixed(2)}
+                  </TableCell>
+                  <TableCell align="right">{player.ping}</TableCell>
                   <TableCell align="right">
                     <KickButton
                       steamName={player.steamName}

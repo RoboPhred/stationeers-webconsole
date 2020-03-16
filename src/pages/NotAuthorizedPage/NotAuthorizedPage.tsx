@@ -16,7 +16,7 @@ const NotAuthorizedPage: React.FC = () => {
     <PageContainer title={t("pages.not-authorized.title")}>
       <RedirectIfLoggedIn to="/server" />
       <Typography>{t("pages.not-authorized.description")}</Typography>
-      <ButtonLink to="/authenticate">
+      <ButtonLink to="/login">
         {t("pages.not-authorized.verbs.return_to_login")}
       </ButtonLink>
     </PageContainer>
