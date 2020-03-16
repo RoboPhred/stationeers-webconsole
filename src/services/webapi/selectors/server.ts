@@ -1,5 +1,5 @@
-import { createWebAPISelector } from "../utils";
+import { createWebapiSelector } from "../utils";
 
-export const serverAddressSelector = createWebAPISelector(
+export const serverAddressSelector = createWebapiSelector(
   state => state.serverAddress
 );

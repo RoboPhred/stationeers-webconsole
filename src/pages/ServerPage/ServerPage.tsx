@@ -8,7 +8,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { useServer } from "@/services/webapi/hooks/useServer";
 
 import PageContainer from "@/components/PageContainer";
-import RequireWebapiAuthorization from "@/components/RequireWebapiAuthorization";
+import RequireLogin from "@/components/RequireWebapiAuthorization";
 
 import ServerStringEditable from "./components/ServerStringEditable";
 
@@ -30,7 +30,7 @@ const ServerPage: React.FC = () => {
   if (!server.isLoaded) {
     return (
       <PageContainer title={t("pages.server.title")}>
-        <RequireWebapiAuthorization />
+        <RequireLogin />
         <CircularProgress color="inherit" />
       </PageContainer>
     );
@@ -40,7 +40,7 @@ const ServerPage: React.FC = () => {
 
   return (
     <PageContainer title={t("pages.server.title")}>
-      <RequireWebapiAuthorization />
+      <RequireLogin />
       <div className={classes.root}>
         {!server && <Typography>{t("verbs.loading")}</Typography>}
         {server && (

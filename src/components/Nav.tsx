@@ -5,14 +5,14 @@ import { useTranslation } from "react-i18next";
 import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
 
-import { isAuthorizedSelector } from "@/services/webapi/selectors/authorization";
+import { isLoggedInSelector } from "@/services/webapi/selectors/authorization";
 import ListItemLink from "@/components/ListItemLink";
 
 import NavItems from "@/nav-links";
 
 const Nav: React.FC = () => {
   const { t } = useTranslation();
-  const isAuthorized = useSelector(isAuthorizedSelector);
+  const isAuthorized = useSelector(isLoggedInSelector);
   return (
     <List component="nav">
       {NavItems.map(({ path, i18nKey, requireWebapiConnection }) => (

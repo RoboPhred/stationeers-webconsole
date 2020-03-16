@@ -1,13 +1,8 @@
 import { concatReducers } from "@/store/utils";
 
-import steamAuthenticatedReducer from "./steam-authenticated";
+import initReducer from "./init";
 import webapiAuthenticatedReducer from "./webapi-authenticated";
-import webapiConnectReducer from "./webapi-connect";
 
-const webAPIReducer = concatReducers(
-  steamAuthenticatedReducer,
-  webapiAuthenticatedReducer,
-  webapiConnectReducer
-);
+const webAPIReducer = concatReducers(initReducer, webapiAuthenticatedReducer);
 
 export default webAPIReducer;

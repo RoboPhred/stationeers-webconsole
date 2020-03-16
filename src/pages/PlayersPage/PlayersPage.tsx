@@ -14,7 +14,7 @@ import Paper from "@material-ui/core/Paper";
 import { usePlayers } from "@/services/webapi/hooks/usePlayers";
 
 import PageContainer from "@/components/PageContainer";
-import RequireWebapiAuthorization from "@/components/RequireWebapiAuthorization";
+import RequireLogin from "@/components/RequireWebapiAuthorization";
 
 import KickButton from "./components/KickButton";
 import BanButton from "./components/BanButton";
@@ -23,7 +23,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     width: "100%",
     height: "100%",
-    padding: theme.spacing()
+    padding: theme.spacing(),
+    overflow: "auto"
   }
 }));
 
@@ -34,7 +35,7 @@ const PlayersPage: React.FC = () => {
 
   return (
     <PageContainer title={t("pages.players.title")}>
-      <RequireWebapiAuthorization />
+      <RequireLogin />
       <div className={classes.root}>
         <TableContainer component={Paper}>
           <Table>

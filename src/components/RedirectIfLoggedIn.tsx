@@ -5,12 +5,15 @@ import { Redirect } from "react-router-dom";
 
 import { isLoggedInSelector } from "@/services/webapi/selectors/authorization";
 
-const RequireLogin: React.FC = () => {
+export interface RedirectIfLoggedInProps {
+  to: string;
+}
+const RedirectIfLoggedIn: React.FC<RedirectIfLoggedInProps> = ({ to }) => {
   const hasAuthorization = useSelector(isLoggedInSelector);
-  if (!hasAuthorization) {
-    return <Redirect to="/authenticate" />;
+  if (hasAuthorization) {
+    return <Redirect to={to} />;
   }
   return null;
 };
 
-export default RequireLogin;
+export default RedirectIfLoggedIn;

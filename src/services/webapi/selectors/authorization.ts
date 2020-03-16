@@ -1,9 +1,9 @@
-import { createWebAPISelector } from "../utils";
+import { createWebapiSelector } from "../utils";
 
-export const authorizationSelector = createWebAPISelector(
+export const authorizationSelector = createWebapiSelector(
   state => state.userAuthorization
 );
 
-export const isAuthorizedSelector = createWebAPISelector(
+export const isLoggedInSelector = createWebapiSelector(
   state => state.userAuthorization != null
 );

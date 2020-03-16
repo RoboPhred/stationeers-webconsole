@@ -5,6 +5,8 @@ import { useTranslation } from "react-i18next";
 import Button from "@material-ui/core/Button";
 
 import PageContainer from "@/components/PageContainer";
+import RedirectIfLoggedIn from "@/components/RedirectIfLoggedIn";
+
 import { createSteamLoginOpenIdUrl } from "@/services/webapi/api";
 
 const AuthenticatePage: React.FC = () => {
@@ -16,6 +18,7 @@ const AuthenticatePage: React.FC = () => {
 
   return (
     <PageContainer title={t("pages.authenticate.title")}>
+      <RedirectIfLoggedIn to="/server" />
       <Button onClick={onLoginClick}>
         {t("pages.authenticate.login_button")}
       </Button>

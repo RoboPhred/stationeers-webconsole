@@ -3,5 +3,5 @@ import {
   createServiceSelectorCreator
 } from "../service-state-utils";
 
-export const createWebAPIReducer = createServiceReducerCreator("webApi");
-export const createWebAPISelector = createServiceSelectorCreator("webApi");
+export const createWebapiReducer = createServiceReducerCreator("webApi");
+export const createWebapiSelector = createServiceSelectorCreator("webApi");

@@ -14,6 +14,7 @@ import {
 
 import saga from "./saga";
 import reducer from "./reducer";
+import { doInit } from "@/actions/init";
 
 const composeEnhancers =
   (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
@@ -34,5 +35,7 @@ const store = createStore(
 );
 
 sagaMiddleware.run(saga);
+
+store.dispatch(doInit());
 
 export default store;
