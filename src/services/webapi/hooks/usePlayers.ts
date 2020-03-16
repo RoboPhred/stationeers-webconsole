@@ -1,5 +1,7 @@
 import * as React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+
+import { invalidateAuthentication } from "@/actions/invalidate-authentication";
 
 import { PlayerPayload } from "../payloads";
 import { serverAddressSelector } from "../selectors/server";
@@ -16,6 +18,7 @@ export interface UsePlayers {
   banPlayer(steamId: string, reason: string | null, duration: number): void;
 }
 export function usePlayers(): UsePlayers {
+  const dispatch = useDispatch();
   const serverAddress = useSelector(serverAddressSelector);
   const authorization = useSelector(authorizationSelector);
 
@@ -30,6 +33,11 @@ export function usePlayers(): UsePlayers {
       const players = await getPlayers(serverAddress, authorization);
       setPlayers(players);
     } catch (e) {
+      if (e.statusCode === 401) {
+        dispatch(invalidateAuthentication());
+        return;
+      }
+
       // TODO: Show error to user
       console.error(e);
     }

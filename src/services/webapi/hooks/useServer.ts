@@ -1,5 +1,7 @@
 import * as React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+
+import { invalidateAuthentication } from "@/actions/invalidate-authentication";
 
 import { ServerPayload } from "../payloads";
 import { serverAddressSelector } from "../selectors/server";
@@ -19,6 +21,7 @@ export interface UseServerData extends ServerPayload {
 export type UseServer = UseServerNoData | UseServerData;
 
 export function useServer(): UseServer {
+  const dispatch = useDispatch();
   const serverAddress = useSelector(serverAddressSelector);
   const authorization = useSelector(authorizationSelector);
 
@@ -34,8 +37,12 @@ export function useServer(): UseServer {
       const server = await getServer(serverAddress, authorization);
       setServer(server);
     } catch (e) {
-      // TODO: Show error to user
-      console.error(e);
+      if (e.statusCode === 401) {
+        dispatch(invalidateAuthentication());
+        return;
+      }
+
+      setError(e.message);
     }
   }
 

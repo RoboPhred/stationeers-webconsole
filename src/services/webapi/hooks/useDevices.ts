@@ -1,5 +1,7 @@
 import * as React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+
+import { invalidateAuthentication } from "@/actions/invalidate-authentication";
 
 import { DevicePayload } from "../payloads";
 import { serverAddressSelector } from "../selectors/server";
@@ -7,6 +9,7 @@ import { authorizationSelector } from "../selectors/authorization";
 import { getDevices } from "../api";
 
 export function useDevices(): DevicePayload[] {
+  const dispatch = useDispatch();
   const serverAddress = useSelector(serverAddressSelector);
   const authorization = useSelector(authorizationSelector);
 
@@ -22,6 +25,10 @@ export function useDevices(): DevicePayload[] {
         const devices = await getDevices(serverAddress, authorization);
         setDevices(devices);
       } catch (e) {
+        if (e.statusCode === 401) {
+          dispatch(invalidateAuthentication());
+          return;
+        }
         // TODO: Show error to user
         console.error(e);
       }
