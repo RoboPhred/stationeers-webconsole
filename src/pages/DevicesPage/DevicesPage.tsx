@@ -85,7 +85,7 @@ const DevicesPage: React.FC = () => {
                     direction={orderBy === "displayName" ? order : "asc"}
                     onClick={onSortByName}
                   >
-                    Device Name
+                    {t("pages.devices.device_name")}
                   </TableSortLabel>
                   <div>
                     <TextField
@@ -96,7 +96,7 @@ const DevicesPage: React.FC = () => {
                     />
                   </div>
                 </TableCell>
-                <TableCell>Prefab Type</TableCell>
+                <TableCell>{t("pages.devices.prefab_type")}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

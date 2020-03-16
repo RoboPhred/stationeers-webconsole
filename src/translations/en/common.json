@@ -35,7 +35,9 @@
       }
     },
     "devices": {
-      "title": "Devices"
+      "title": "Devices",
+      "device_name": "Device Name",
+      "prefab_type": "Prefab Type"
     },
     "items": {
       "title": "Items"
