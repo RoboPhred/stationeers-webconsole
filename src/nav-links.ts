@@ -16,6 +16,11 @@ const NavItems: NavItem[] = [
     requireWebapiConnection: true
   },
   {
+    path: "/chat",
+    i18nKey: "pages.chat.title",
+    requireWebapiConnection: true
+  },
+  {
     path: "/devices",
     i18nKey: "pages.devices.title",
     requireWebapiConnection: true

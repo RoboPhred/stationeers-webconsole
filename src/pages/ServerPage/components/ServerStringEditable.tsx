@@ -32,10 +32,13 @@ const ServerStringEditable: React.FC<ServerStringEditableProps> = ({
   const onCancelEdit = React.useCallback(() => {
     setEditing(false);
   }, []);
-  const onCommitEdit = React.useCallback((newValue: string) => {
-    setEditing(false);
-    onValueChanged(newValue);
-  }, []);
+  const onCommitEdit = React.useCallback(
+    (newValue: string) => {
+      setEditing(false);
+      onValueChanged(newValue);
+    },
+    [onValueChanged]
+  );
 
   return (
     <div className={classes.section}>

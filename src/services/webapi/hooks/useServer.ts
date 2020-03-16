@@ -1,84 +1,39 @@
 import * as React from "react";
-import { useSelector, useDispatch } from "react-redux";
-
-import { invalidateAuthentication } from "@/actions/invalidate-authentication";
 
 import { ServerPayload } from "../payloads";
-import { serverAddressSelector } from "../selectors/server";
-import { authorizationSelector } from "../selectors/authorization";
-import { getServer, postServer } from "../api";
+import { getServer, postServer as apiPostServer } from "../api";
 
-export interface UseServerNoData {
-  isLoaded: false;
-  errorMessage: string | null;
-}
-export interface UseServerData extends ServerPayload {
-  isLoaded: true;
-  errorMessage: string | null;
+import { useApiCall } from "./useApiCall";
+import { UseApiData, useApiData } from "./useApiData";
+
+export interface UseServerFunctions {
   setName(name: string): void;
 }
-
-export type UseServer = UseServerNoData | UseServerData;
+export type UseServer = UseApiData<ServerPayload & UseServerFunctions>;
 
 export function useServer(): UseServer {
-  const dispatch = useDispatch();
-  const serverAddress = useSelector(serverAddressSelector);
-  const authorization = useSelector(authorizationSelector);
+  const postServer = useApiCall(apiPostServer);
 
-  const [errorMessage, setError] = React.useState<string | null>(null);
-  const [server, setServer] = React.useState<ServerPayload | null>(null);
-
-  async function fetchServer() {
-    if (!serverAddress || !authorization) {
-      return;
-    }
-
-    try {
-      const server = await getServer(serverAddress, authorization);
-      setServer(server);
-    } catch (e) {
-      if (e.statusCode === 401) {
-        dispatch(invalidateAuthentication());
-        return;
-      }
-
-      setError(e.message);
-    }
-  }
-
-  const postCurrentServer = React.useCallback(
-    async (body: Partial<ServerPayload>) => {
-      if (!serverAddress || !authorization) {
-        return;
-      }
-      const server = await postServer(serverAddress, authorization, body);
-      setServer(server);
-    },
-    [serverAddress, authorization]
-  );
-
-  React.useEffect(() => {
-    fetchServer();
-  }, []);
+  const result = useApiData(getServer) as UseServer;
+  const { refresh } = result;
 
   const setName = React.useCallback(
     (name: string) => {
-      postCurrentServer({ name });
+      if (!name || !name.length) {
+        return;
+      }
+      async function setNameAsync() {
+        await postServer({ name });
+        refresh();
+      }
+      setNameAsync();
     },
-    [postServer]
+    [postServer, refresh]
   );
 
-  if (!server) {
-    return {
-      isLoaded: false,
-      errorMessage
-    };
+  if (result.isLoaded) {
+    result.setName = setName;
   }
 
-  return {
-    isLoaded: true,
-    errorMessage,
-    ...server,
-    setName
-  };
+  return result;
 }

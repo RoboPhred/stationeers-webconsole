@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Theme, makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Button from "@material-ui/core/Button";
 
 import { useServer } from "@/services/webapi/hooks/useServer";
 
@@ -36,12 +37,13 @@ const ServerPage: React.FC = () => {
     );
   }
 
-  const { name, setName, mapName, maxPlayers, password } = server;
+  const { name, setName, mapName, maxPlayers, password, refresh } = server;
 
   return (
     <PageContainer title={t("pages.server.title")}>
       <RequireLogin />
       <div className={classes.root}>
+        <Button onClick={refresh}>Refresh</Button>
         {!server && <Typography>{t("verbs.loading")}</Typography>}
         {server && (
           <>

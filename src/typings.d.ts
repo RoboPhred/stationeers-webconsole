@@ -6,3 +6,5 @@ interface Window {
 type ReactComponentProps<T> = T extends React.ComponentType<infer P>
   ? P
   : never;
+
+type PromiseResult<T> = T extends Promise<infer R> ? R : never;

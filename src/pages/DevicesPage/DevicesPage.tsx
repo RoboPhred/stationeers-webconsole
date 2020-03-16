@@ -12,6 +12,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { Order, flipOrder, stableSort, getComparator } from "@/sort-utils";
 
@@ -20,6 +21,7 @@ import { DevicePayload } from "@/services/webapi/payloads";
 
 import PageContainer from "@/components/PageContainer";
 import RequireLogin from "@/components/RequireWebapiAuthorization";
+import ErrorIndicator from "@/components/ErrorIndicator";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -60,7 +62,26 @@ const DevicesPage: React.FC = () => {
     }
   }, [order, orderBy]);
 
-  const devices = useDevices();
+  const devicesData = useDevices();
+
+  if (devicesData.errorMessage) {
+    return (
+      <PageContainer title={t("pages.devices.title")}>
+        <RequireLogin />
+        <ErrorIndicator errorMessage={devicesData.errorMessage} />;
+      </PageContainer>
+    );
+  } else if (!devicesData.isLoaded) {
+    return (
+      <PageContainer title={t("pages.devices.title")}>
+        <RequireLogin />
+        <CircularProgress />
+      </PageContainer>
+    );
+  }
+
+  const { devices } = devicesData;
+
   const filteredDevices = devices.filter(x =>
     deviceNameFilter === ""
       ? true

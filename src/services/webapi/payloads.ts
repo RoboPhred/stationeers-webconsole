@@ -18,6 +18,11 @@ export interface PlayerPayload {
   score: number;
 }
 
+export interface ChatPayload {
+  displayName: string;
+  message: string;
+}
+
 export interface ThingPayload {
   referenceId: string;
   prefabHash: number;

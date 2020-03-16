@@ -28,8 +28,15 @@
         "edit_server_name": "Edit Server Name"
       }
     },
+    "chat": {
+      "title": "Chat"
+    },
     "players": {
       "title": "Players",
+      "steam_id": "Steam ID",
+      "play_time_minutes": "Play Time (Minutes)",
+      "ping": "Ping",
+      "actions": "Actions",
       "kick_ban_reason": "Reason",
       "kick_named_player": "Kick player \"{{steamName}}\" ({{steamId}})",
       "ban_named_player": "Ban player \"{{steamName}}\" ({{steamId}})",

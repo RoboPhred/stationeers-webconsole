@@ -10,11 +10,13 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import { usePlayers } from "@/services/webapi/hooks/usePlayers";
 
 import PageContainer from "@/components/PageContainer";
 import RequireLogin from "@/components/RequireWebapiAuthorization";
+import ErrorIndicator from "@/components/ErrorIndicator";
 
 import KickButton from "./components/KickButton";
 import BanButton from "./components/BanButton";
@@ -31,7 +33,26 @@ const useStyles = makeStyles((theme: Theme) => ({
 const PlayersPage: React.FC = () => {
   const { t } = useTranslation();
   const classes = useStyles();
-  const { players, kickPlayer, banPlayer } = usePlayers();
+
+  const playersData = usePlayers();
+
+  if (playersData.errorMessage) {
+    return (
+      <PageContainer title={t("pages.players.title")}>
+        <RequireLogin />
+        <ErrorIndicator errorMessage={playersData.errorMessage} />;
+      </PageContainer>
+    );
+  } else if (!playersData.isLoaded) {
+    return (
+      <PageContainer title={t("pages.players.title")}>
+        <RequireLogin />
+        <CircularProgress />
+      </PageContainer>
+    );
+  }
+
+  const { players, kickPlayer, banPlayer } = playersData;
 
   return (
     <PageContainer title={t("pages.players.title")}>
@@ -42,10 +63,16 @@ const PlayersPage: React.FC = () => {
             <TableHead>
               <TableRow>
                 <TableCell>Player Name</TableCell>
-                <TableCell align="right">Steam ID</TableCell>
-                <TableCell align="right">Play Time (Minutes)</TableCell>
-                <TableCell align="right">Ping</TableCell>
-                <TableCell align="right">Actions</TableCell>
+                <TableCell align="right">
+                  {t("pages.players.steam_id")}
+                </TableCell>
+                <TableCell align="right">
+                  {t("pages.players.play_time_minutes")}
+                </TableCell>
+                <TableCell align="right">{t("pages.players.ping")}</TableCell>
+                <TableCell align="right">
+                  {t("pages.players.actions")}
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -54,7 +81,7 @@ const PlayersPage: React.FC = () => {
                   <TableCell>{player.steamName}</TableCell>
                   <TableCell align="right">{player.steamId}</TableCell>
                   <TableCell align="right">
-                    {(player.playTime / 1000 / 60).toFixed(2)}
+                    {(player.playTime / 60).toFixed(2)}
                   </TableCell>
                   <TableCell align="right">{player.ping}</TableCell>
                   <TableCell align="right">

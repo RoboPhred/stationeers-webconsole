@@ -8,8 +8,15 @@ import {
   LoginPayload,
   DevicePayload,
   PlayerPayload,
-  ItemPayload
+  ItemPayload,
+  ChatPayload
 } from "./payloads";
+
+export type ApiFunction<TResult, TArgs extends any[]> = (
+  webapiServerUrl: string,
+  authorization: string,
+  ...args: TArgs
+) => Promise<TResult>;
 
 export function createSteamLoginOpenIdUrl(): string {
   var returnTo = new URL(PUBLIC_URL);
@@ -154,6 +161,27 @@ export async function banPlayer(
     throw new WebAPIError(response.status, response.statusText);
   }
   return;
+}
+
+export async function getChat(
+  webapiServerUrl: string,
+  authorization: string
+): Promise<ChatPayload[]> {
+  const url = new URL(webapiServerUrl);
+  url.pathname = "chat";
+
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${authorization}`
+    }
+  });
+  if (response.status !== 200) {
+    throw new WebAPIError(response.status, response.statusText);
+  }
+
+  const result: ChatPayload[] = await response.json();
+  return result;
 }
 
 export async function getDevices(

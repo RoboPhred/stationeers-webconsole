@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import LoginPage from "@/pages/LoginPage";
 import AuthenticationCallbackPage from "@/pages/AuthenticationCallbackPage";
 import ConnectionErrorPage from "@/pages/ConnectionErrorPage";
+import ChatPage from "@/pages/ChatPage";
 import DevicesPage from "@/pages/DevicesPage";
 import ItemsPage from "@/pages/ItemsPage";
 import NotAuthorizedPage from "@/pages/NotAuthorizedPage";
@@ -23,6 +24,7 @@ const Routes: React.FC = () => (
     <Route path="/not-authorized" exact component={NotAuthorizedPage} />
     <Route path="/connection-error" exact component={ConnectionErrorPage} />
     <Route path="/server" exact component={ServerPage} />
+    <Route path="/chat" exact component={ChatPage} />
     <Route path="/players" exact component={PlayersPage} />
     <Route path="/devices" exact component={DevicesPage} />
     <Route path="/items" exact component={ItemsPage} />
