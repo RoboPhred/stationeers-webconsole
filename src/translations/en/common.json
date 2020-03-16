@@ -1,12 +1,19 @@
 {
   "pages": {
-    "authenticate": {
-      "title": "Authenticate with Steam",
+    "login": {
+      "title": "Login with Steam",
       "login_button": "Login to Steam"
     },
-    "connect": {
-      "title": "Connect to Server",
-      "server_address": "Server Address"
+    "not-authorized": {
+      "title": "Not Authorized",
+      "description": "This steam account is not authorized to connect to this server.",
+      "verbs": {
+        "return_to_login": "Return to Login"
+      }
+    },
+    "connection-error": {
+      "title": "Connection Error",
+      "description": "There was an error attempting to connect to the server."
     },
     "authentication-callback": {
       "title": "Authenticating"

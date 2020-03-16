@@ -12,5 +12,5 @@ export default function* invalidateAuthenticationSaga() {
 }
 
 function* handleInvalidateAuthentication() {
-  yield put(push("/authenticate"));
+  yield put(push("/login"));
 }

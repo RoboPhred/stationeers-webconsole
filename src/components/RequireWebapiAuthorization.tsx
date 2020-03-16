@@ -8,7 +8,7 @@ import { isLoggedInSelector } from "@/services/webapi/selectors/authorization";
 const RequireLogin: React.FC = () => {
   const hasAuthorization = useSelector(isLoggedInSelector);
   if (!hasAuthorization) {
-    return <Redirect to="/authenticate" />;
+    return <Redirect to="/login" />;
   }
   return null;
 };

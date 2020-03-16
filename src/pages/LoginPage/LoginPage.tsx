@@ -9,7 +9,7 @@ import RedirectIfLoggedIn from "@/components/RedirectIfLoggedIn";
 
 import { createSteamLoginOpenIdUrl } from "@/services/webapi/api";
 
-const AuthenticatePage: React.FC = () => {
+const LoginPage: React.FC = () => {
   const { t } = useTranslation();
 
   const onLoginClick = React.useCallback(() => {
@@ -17,13 +17,11 @@ const AuthenticatePage: React.FC = () => {
   }, []);
 
   return (
-    <PageContainer title={t("pages.authenticate.title")}>
+    <PageContainer title={t("pages.login.title")}>
       <RedirectIfLoggedIn to="/server" />
-      <Button onClick={onLoginClick}>
-        {t("pages.authenticate.login_button")}
-      </Button>
+      <Button onClick={onLoginClick}>{t("pages.login.login_button")}</Button>
     </PageContainer>
   );
 };
 
-export default AuthenticatePage;
+export default LoginPage;

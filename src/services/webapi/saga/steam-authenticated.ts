@@ -26,7 +26,12 @@ function* handleSteamAuthenticated(action: SteamAuthenticatedAction) {
     yield put(webapiAuthenticated(payload.authorization));
     yield put(replace("/server"));
   } catch (e) {
-    // TODO: Show user
-    console.error(e);
+    if (e.statusCode === 401) {
+      yield put(replace("/not-authorized"));
+      return;
+    }
+
+    // Might want to show the user the error message?
+    yield put(replace("/connection-error"));
   }
 }
