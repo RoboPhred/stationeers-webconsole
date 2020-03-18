@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
+import HttpStatusCodes from "http-status-codes";
 
 import { invalidateAuthentication } from "@/actions/invalidate-authentication";
 
@@ -19,10 +20,10 @@ export function useApiCall<TResult, TArgs extends any[]>(
     (...args) => {
       if (!serverAddress || !authorization) {
         dispatch(invalidateAuthentication());
-        throw new WebAPIError(401, "Unauthorized.");
+        throw new WebAPIError(HttpStatusCodes.UNAUTHORIZED, "Unauthorized.");
       }
       return apiCall(serverAddress, authorization, ...args).catch(e => {
-        if (e.statusCode === 401) {
+        if (e.statusCode === HttpStatusCodes.UNAUTHORIZED) {
           dispatch(invalidateAuthentication());
         }
         throw e;

@@ -10,6 +10,7 @@ import { useServer } from "@/services/webapi/hooks/useServer";
 
 import PageContainer from "@/components/PageContainer";
 import RequireLogin from "@/components/RequireWebapiAuthorization";
+import ErrorPageContent from "@/components/ErrorPageContent";
 
 import ServerStringEditable from "./components/ServerStringEditable";
 
@@ -28,6 +29,12 @@ const ServerPage: React.FC = () => {
 
   const server = useServer();
 
+  if (server.errorMessage) {
+    <PageContainer title={t("pages.server.title")}>
+      <RequireLogin />
+      <ErrorPageContent errorMessage={server.errorMessage} />
+    </PageContainer>;
+  }
   if (!server.isLoaded) {
     return (
       <PageContainer title={t("pages.server.title")}>

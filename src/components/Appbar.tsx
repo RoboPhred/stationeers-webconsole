@@ -7,7 +7,6 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 
 import BackButton from "./BackButton";
-import GithubButton from "./GithubButton";
 
 export interface AppbarProps {
   title: string;
@@ -34,7 +33,6 @@ const Appbar: React.FC<Props> = ({ title, back }) => {
         <Typography className={classes.title} variant="h6" color="inherit">
           {title}
         </Typography>
-        <GithubButton className={classes.chip} />
       </Toolbar>
     </MaterialAppBar>
   );

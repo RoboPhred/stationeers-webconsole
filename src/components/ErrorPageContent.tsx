@@ -2,11 +2,11 @@ import * as React from "react";
 
 import Typography from "@material-ui/core/Typography";
 
-export interface ErrorIndicatorProps {
+export interface ErrorPageContentProps {
   errorMessage: string;
 }
 
-export const ErrorIndicator: React.FC<ErrorIndicatorProps> = ({
+export const ErrorPageContent: React.FC<ErrorPageContentProps> = ({
   errorMessage
 }) => {
   return (
@@ -17,4 +17,4 @@ export const ErrorIndicator: React.FC<ErrorIndicatorProps> = ({
   );
 };
 
-export default ErrorIndicator;
+export default ErrorPageContent;

@@ -1,8 +1,8 @@
 {
   "pages": {
     "login": {
-      "title": "Login with Steam",
-      "login_button": "Login to Steam"
+      "title": "Login",
+      "login_button": "Login"
     },
     "not-authorized": {
       "title": "Not Authorized",

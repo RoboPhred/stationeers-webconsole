@@ -16,7 +16,7 @@ import { usePlayers } from "@/services/webapi/hooks/usePlayers";
 
 import PageContainer from "@/components/PageContainer";
 import RequireLogin from "@/components/RequireWebapiAuthorization";
-import ErrorIndicator from "@/components/ErrorIndicator";
+import ErrorPageContent from "@/components/ErrorPageContent";
 
 import KickButton from "./components/KickButton";
 import BanButton from "./components/BanButton";
@@ -40,7 +40,7 @@ const PlayersPage: React.FC = () => {
     return (
       <PageContainer title={t("pages.players.title")}>
         <RequireLogin />
-        <ErrorIndicator errorMessage={playersData.errorMessage} />;
+        <ErrorPageContent errorMessage={playersData.errorMessage} />;
       </PageContainer>
     );
   } else if (!playersData.isLoaded) {

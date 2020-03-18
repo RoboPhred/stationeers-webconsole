@@ -1,4 +1,4 @@
-import { stringify } from "query-string";
+import HttpStatusCodes from "http-status-codes";
 
 import { AUTHENTICATION_CALLBACK_ROUTE } from "@/routes";
 
@@ -18,39 +18,104 @@ export type ApiFunction<TResult, TArgs extends any[]> = (
   ...args: TArgs
 ) => Promise<TResult>;
 
-export function createSteamLoginOpenIdUrl(): string {
+export function adjustOpenIDReturnTo(openIdSigninUrl: string): string {
   var returnTo = new URL(PUBLIC_URL);
   returnTo.hash = AUTHENTICATION_CALLBACK_ROUTE;
 
-  const query = {
-    "openid.ns": "http://specs.openid.net/auth/2.0",
-    "openid.mode": "checkid_setup",
-    "openid.return_to": returnTo.toString(),
-    "openid.realm": PUBLIC_URL,
-    "openid.identity": "http://specs.openid.net/auth/2.0/identifier_select",
-    "openid.claimed_id": "http://specs.openid.net/auth/2.0/identifier_select"
-  };
-  return "https://steamcommunity.com/openid/login?" + stringify(query);
+  var signinUrl = new URL(openIdSigninUrl);
+  signinUrl.searchParams.set("openid.realm", PUBLIC_URL);
+  signinUrl.searchParams.set("openid.return_to", returnTo.toString());
+  return signinUrl.toString();
 }
 
+export interface RedirectAuthenticationResult {
+  type: "redirect";
+  location: string;
+}
+export interface JwtAutenticationResult {
+  type: "jwt";
+  authorization: string;
+}
+export type AuthenticationResult =
+  | RedirectAuthenticationResult
+  | JwtAutenticationResult;
 export async function authenticate(
+  webapiServerUrl: string
+): Promise<AuthenticationResult> {
+  const url = new URL(webapiServerUrl);
+  url.pathname = "login";
+
+  const response = await fetch(url.toString(), { method: "GET" });
+  // This does not work, as redirects are handled by the browser and we cannot get the redirect url.
+  // if (response.status === HttpStatusCodes.TEMPORARY_REDIRECT) {
+  //   var location = response.headers.get("Location");
+  //   if (!location) {
+  //     throw new WebAPIError(
+  //       HttpStatusCodes.INTERNAL_SERVER_ERROR,
+  //       "Server returned redirect but no location header."
+  //     );
+  //   }
+  //   return {
+  //     type: "redirect",
+  //     location
+  //   };
+  // }
+
+  if (response.status !== HttpStatusCodes.OK) {
+    throw new WebAPIError(response.status, response.statusText);
+  }
+
+  // HACK: We get the redirect location through the body if desired.
+  const body = await response.json();
+  if (body.location) {
+    return {
+      type: "redirect",
+      location: body.location
+    };
+  }
+
+  var authorization = response.headers.get("Authorization");
+  if (!authorization) {
+    throw new WebAPIError(
+      HttpStatusCodes.INTERNAL_SERVER_ERROR,
+      "Server returned OK but no authorization header."
+    );
+  }
+
+  return {
+    type: "jwt",
+    authorization
+  };
+}
+
+export async function authenticateOpenID(
   webapiServerUrl: string,
   openIdQuery: string
-): Promise<LoginPayload> {
+): Promise<JwtAutenticationResult> {
   const url = new URL(webapiServerUrl);
   url.pathname = "login";
   url.search = openIdQuery;
 
-  const response = await fetch(url.toString(), { method: "POST" });
-  if (response.status !== 200) {
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    redirect: "manual"
+  });
+  if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
   }
 
-  const result: LoginPayload = await response.json();
-  // Doesn't work.  CORS?
-  // Sending it by body now.
-  //result.authorization = response.headers.get("Authorization")!;
-  return result;
+  var authorization = response.headers.get("Authorization");
+  if (!authorization) {
+    throw new WebAPIError(
+      HttpStatusCodes.INTERNAL_SERVER_ERROR,
+      "Server returned OK but no authorization header."
+    );
+  }
+
+  return {
+    type: "jwt",
+    authorization
+  };
 }
 
 export async function getServer(
@@ -63,10 +128,10 @@ export async function getServer(
   const response = await fetch(url.toString(), {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${authorization}`
+      Authorization: authorization
     }
   });
-  if (response.status !== 200) {
+  if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
   }
 
@@ -85,11 +150,11 @@ export async function postServer(
   const response = await fetch(url.toString(), {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${authorization}`
+      Authorization: authorization
     },
     body: JSON.stringify(body)
   });
-  if (response.status !== 200) {
+  if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
   }
 
@@ -107,10 +172,10 @@ export async function getPlayers(
   const response = await fetch(url.toString(), {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${authorization}`
+      Authorization: authorization
     }
   });
-  if (response.status !== 200) {
+  if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
   }
 
@@ -130,11 +195,11 @@ export async function kickPlayer(
   const response = await fetch(url.toString(), {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${authorization}`
+      Authorization: authorization
     },
     body: JSON.stringify({ reason })
   });
-  if (response.status !== 200) {
+  if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
   }
   return;
@@ -153,11 +218,11 @@ export async function banPlayer(
   const response = await fetch(url.toString(), {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${authorization}`
+      Authorization: authorization
     },
     body: JSON.stringify({ reason, duration })
   });
-  if (response.status !== 200) {
+  if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
   }
   return;
@@ -173,10 +238,10 @@ export async function getChat(
   const response = await fetch(url.toString(), {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${authorization}`
+      Authorization: authorization
     }
   });
-  if (response.status !== 200) {
+  if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
   }
 
@@ -194,10 +259,10 @@ export async function getDevices(
   const response = await fetch(url.toString(), {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${authorization}`
+      Authorization: authorization
     }
   });
-  if (response.status !== 200) {
+  if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
   }
 
@@ -215,10 +280,10 @@ export async function getItems(
   const response = await fetch(url.toString(), {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${authorization}`
+      Authorization: authorization
     }
   });
-  if (response.status !== 200) {
+  if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
   }
 

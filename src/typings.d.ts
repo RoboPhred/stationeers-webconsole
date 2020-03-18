@@ -8,3 +8,6 @@ type ReactComponentProps<T> = T extends React.ComponentType<infer P>
   : never;
 
 type PromiseResult<T> = T extends Promise<infer R> ? R : never;
+type PromiseReturnType<T> = T extends (...args: any[]) => Promise<infer R>
+  ? R
+  : never;

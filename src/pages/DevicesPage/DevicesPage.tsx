@@ -21,7 +21,7 @@ import { DevicePayload } from "@/services/webapi/payloads";
 
 import PageContainer from "@/components/PageContainer";
 import RequireLogin from "@/components/RequireWebapiAuthorization";
-import ErrorIndicator from "@/components/ErrorIndicator";
+import ErrorPageContent from "@/components/ErrorPageContent";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -68,7 +68,7 @@ const DevicesPage: React.FC = () => {
     return (
       <PageContainer title={t("pages.devices.title")}>
         <RequireLogin />
-        <ErrorIndicator errorMessage={devicesData.errorMessage} />;
+        <ErrorPageContent errorMessage={devicesData.errorMessage} />;
       </PageContainer>
     );
   } else if (!devicesData.isLoaded) {

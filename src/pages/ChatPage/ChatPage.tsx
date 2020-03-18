@@ -7,7 +7,7 @@ import { useChat } from "@/services/webapi/hooks/useChat";
 
 import PageContainer from "@/components/PageContainer";
 import RequireLogin from "@/components/RequireWebapiAuthorization";
-import ErrorIndicator from "@/components/ErrorIndicator";
+import ErrorPageContent from "@/components/ErrorPageContent";
 
 const ChatPage: React.FC = () => {
   const { t } = useTranslation();
@@ -16,7 +16,7 @@ const ChatPage: React.FC = () => {
 
   let content: React.ReactChild;
   if (chatData.errorMessage) {
-    content = <ErrorIndicator errorMessage={chatData.errorMessage} />;
+    content = <ErrorPageContent errorMessage={chatData.errorMessage} />;
   } else if (!chatData.isLoaded) {
     return <CircularProgress />;
   } else {

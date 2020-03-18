@@ -7,7 +7,7 @@ import { useItems } from "@/services/webapi/hooks/useItems";
 
 import PageContainer from "@/components/PageContainer";
 import RequireLogin from "@/components/RequireWebapiAuthorization";
-import ErrorIndicator from "@/components/ErrorIndicator";
+import ErrorPageContent from "@/components/ErrorPageContent";
 
 const ItemsPage: React.FC = () => {
   const { t } = useTranslation();
@@ -16,7 +16,7 @@ const ItemsPage: React.FC = () => {
 
   let content: React.ReactChild;
   if (itemsData.errorMessage) {
-    content = <ErrorIndicator errorMessage={itemsData.errorMessage} />;
+    content = <ErrorPageContent errorMessage={itemsData.errorMessage} />;
   } else if (!itemsData.isLoaded) {
     return <CircularProgress />;
   } else {
