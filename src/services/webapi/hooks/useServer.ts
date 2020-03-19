@@ -22,11 +22,7 @@ export function useServer(): UseServer {
       if (!name || !name.length) {
         return;
       }
-      async function setNameAsync() {
-        await postServer({ name });
-        refresh();
-      }
-      setNameAsync();
+      postServer({ name }).then(refresh);
     },
     [postServer, refresh]
   );

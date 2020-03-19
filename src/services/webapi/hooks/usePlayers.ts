@@ -1,3 +1,5 @@
+import * as React from "react";
+
 import { PlayerPayload } from "../payloads";
 import {
   getPlayers,
@@ -15,10 +17,25 @@ export interface UsePlayersData {
 }
 export type UsePlayers = UseApiData<UsePlayersData>;
 export function usePlayers(): UsePlayers {
-  const kickPlayer = useApiCall(apiKickPlayer);
-  const banPlayer = useApiCall(apiBanPlayer);
+  const kickPlayerCall = useApiCall(apiKickPlayer);
+  const banPlayerCall = useApiCall(apiBanPlayer);
 
   const result = useApiData(getPlayers, players => ({ players })) as UsePlayers;
+  const { refresh } = result;
+
+  const kickPlayer = React.useCallback(
+    (steamId: string, reason: string | null) => {
+      kickPlayerCall(steamId, reason).then(refresh);
+    },
+    [kickPlayerCall, refresh]
+  );
+
+  const banPlayer = React.useCallback(
+    (steamId: string, reason: string | null) => {
+      banPlayerCall(steamId, reason).then(refresh);
+    },
+    [banPlayerCall, refresh]
+  );
 
   if (result.isLoaded) {
     result.kickPlayer = kickPlayer;

@@ -9,7 +9,8 @@ import {
   DevicePayload,
   PlayerPayload,
   ItemPayload,
-  ChatPayload
+  ChatPayload,
+  BanPayload
 } from "./payloads";
 
 export type ApiFunction<TResult, TArgs extends any[]> = (
@@ -210,7 +211,7 @@ export async function banPlayer(
   authorization: string,
   steamId: string,
   reason: string | null,
-  duration: number = 1
+  hours: number = 1
 ): Promise<void> {
   const url = new URL(webapiServerUrl);
   url.pathname = `players/${steamId}/ban`;
@@ -220,7 +221,46 @@ export async function banPlayer(
     headers: {
       Authorization: authorization
     },
-    body: JSON.stringify({ reason, duration })
+    body: JSON.stringify({ reason, hours })
+  });
+  if (response.status !== HttpStatusCodes.OK) {
+    throw new WebAPIError(response.status, response.statusText);
+  }
+  return;
+}
+
+export async function getBans(
+  webapiServerUrl: string,
+  authorization: string
+): Promise<BanPayload[]> {
+  const url = new URL(webapiServerUrl);
+  url.pathname = `bans`;
+
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    headers: {
+      Authorization: authorization
+    }
+  });
+  if (response.status !== HttpStatusCodes.OK) {
+    throw new WebAPIError(response.status, response.statusText);
+  }
+  return await response.json();
+}
+
+export async function removeBan(
+  webapiServerUrl: string,
+  authorization: string,
+  steamId: string
+): Promise<void> {
+  const url = new URL(webapiServerUrl);
+  url.pathname = `bans/${steamId}`;
+
+  const response = await fetch(url.toString(), {
+    method: "DELETE",
+    headers: {
+      Authorization: authorization
+    }
   });
   if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);

@@ -1,8 +1,8 @@
 import { DevicePayload } from "../payloads";
 import { getDevices } from "../api";
-import { useApiData, UseApiDataPopulated } from "./useApiData";
+import { useApiData, UseApiData } from "./useApiData";
 
-export type UseDevices = UseApiDataPopulated<{ devices: DevicePayload[] }>;
+export type UseDevices = UseApiData<{ devices: DevicePayload[] }>;
 export function useDevices(): UseDevices {
   return useApiData(getDevices, devices => ({ devices }));
 }

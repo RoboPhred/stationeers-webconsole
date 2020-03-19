@@ -29,10 +29,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: "100%",
     padding: theme.spacing(),
     overflow: "auto"
-  },
-  container: {
-    width: "100%",
-    height: "100%"
   }
 }));
 
@@ -96,7 +92,7 @@ const DevicesPage: React.FC = () => {
     <PageContainer title={t("pages.devices.title")}>
       <RequireLogin />
       <div className={classes.root}>
-        <TableContainer component={Paper} className={classes.container}>
+        <TableContainer component={Paper}>
           <Table stickyHeader>
             <TableHead>
               <TableRow>

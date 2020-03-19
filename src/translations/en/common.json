@@ -48,6 +48,14 @@
         "ban_player": "Ban Player"
       }
     },
+    "bans": {
+      "title": "Bans",
+      "ban": "Ban",
+      "actions": "Actions",
+      "duration": "Duration",
+      "forever": "Forever",
+      "remove_ban": "Remove Ban"
+    },
     "devices": {
       "title": "Devices",
       "device_name": "Device Name",
@@ -56,6 +64,9 @@
     "items": {
       "title": "Items"
     }
+  },
+  "steam": {
+    "steam_id": "Steam ID"
   },
   "verbs": {
     "loading": "Loading",

@@ -18,6 +18,11 @@ export interface PlayerPayload {
   score: number;
 }
 
+export interface BanPayload {
+  steamId: string;
+  endTimestamp: number;
+}
+
 export interface ChatPayload {
   displayName: string;
   message: string;

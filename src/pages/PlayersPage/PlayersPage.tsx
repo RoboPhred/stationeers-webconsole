@@ -63,9 +63,7 @@ const PlayersPage: React.FC = () => {
             <TableHead>
               <TableRow>
                 <TableCell>Player Name</TableCell>
-                <TableCell align="right">
-                  {t("pages.players.steam_id")}
-                </TableCell>
+                <TableCell align="right">{t("steam.steam_id")}</TableCell>
                 <TableCell align="right">
                   {t("pages.players.play_time_minutes")}
                 </TableCell>
