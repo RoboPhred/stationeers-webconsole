@@ -34,7 +34,7 @@
     "players": {
       "title": "Players",
       "steam_id": "Steam ID",
-      "play_time_minutes": "Play Time (Minutes)",
+      "play_time": "Play Time",
       "ping": "Ping",
       "actions": "Actions",
       "kick_ban_reason": "Reason",
@@ -60,6 +60,10 @@
       "title": "Devices",
       "device_name": "Device Name",
       "prefab_type": "Prefab Type"
+    },
+    "device": {
+      "title": "Device",
+      "title_named": "{{displayName}} {{prefabName}} ({{referenceId}}) - Device"
     },
     "items": {
       "title": "Items"

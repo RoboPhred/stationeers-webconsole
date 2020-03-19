@@ -6,7 +6,7 @@ export interface UseApiCommon {
   refresh(): void;
 }
 
-export interface UseApiUnpopulated extends UseApiCommon {
+export interface UseApiDataUnpopulated extends UseApiCommon {
   isLoaded: false;
   errorMessage: string | null;
 }
@@ -17,14 +17,24 @@ export type UseApiDataPopulated<TResult> = TResult &
   };
 
 export type UseApiData<TResult> =
-  | UseApiUnpopulated
+  | UseApiDataUnpopulated
   | UseApiDataPopulated<TResult>;
 
-export function useApiData<TResult, TFunc extends ApiFunction<any, []>>(
+// I feel like this should be extends UseApiData<infer D> but that results in UseApiDataPopulated<D> | UseApiDataUnpopulated
+export type PopulatedApiData<T> = T extends UseApiDataPopulated<infer D>
+  ? UseApiDataPopulated<D>
+  : never;
+
+export function useApiData<
+  TResult,
+  TArgs extends any[],
+  TFunc extends ApiFunction<any, TArgs>
+>(
   apiCall: TFunc,
-  resultTransformer?: (result: PromiseResult<ReturnType<TFunc>>) => TResult
+  resultTransformer?: (result: PromiseResult<ReturnType<TFunc>>) => TResult,
+  ...args: TArgs
 ): UseApiDataPopulated<TResult> {
-  const invokeApiCall = useApiCall<PromiseResult<ReturnType<TFunc>>, []>(
+  const invokeApiCall = useApiCall<PromiseResult<ReturnType<TFunc>>, TArgs>(
     apiCall
   );
 
@@ -38,7 +48,7 @@ export function useApiData<TResult, TFunc extends ApiFunction<any, []>>(
     let mounted = true;
     async function fetch() {
       try {
-        let result: any = await invokeApiCall();
+        let result: any = await invokeApiCall(...args);
         if (!mounted) {
           return;
         }
@@ -52,7 +62,6 @@ export function useApiData<TResult, TFunc extends ApiFunction<any, []>>(
           return;
         }
 
-        // TODO: Show error to user
         setErrorMessage(e.message);
       }
     }

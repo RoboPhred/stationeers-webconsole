@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
+import moment from "moment";
 
 import { Theme, makeStyles } from "@material-ui/core/styles";
 
@@ -65,7 +66,7 @@ const PlayersPage: React.FC = () => {
                 <TableCell>Player Name</TableCell>
                 <TableCell align="right">{t("steam.steam_id")}</TableCell>
                 <TableCell align="right">
-                  {t("pages.players.play_time_minutes")}
+                  {t("pages.players.play_time")}
                 </TableCell>
                 <TableCell align="right">{t("pages.players.ping")}</TableCell>
                 <TableCell align="right">
@@ -79,7 +80,7 @@ const PlayersPage: React.FC = () => {
                   <TableCell>{player.steamName}</TableCell>
                   <TableCell align="right">{player.steamId}</TableCell>
                   <TableCell align="right">
-                    {(player.playTime / 60).toFixed(2)}
+                    {moment.duration(player.playTime, "seconds").humanize()}
                   </TableCell>
                   <TableCell align="right">{player.ping}</TableCell>
                   <TableCell align="right">

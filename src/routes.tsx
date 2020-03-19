@@ -7,6 +7,7 @@ import ConnectionErrorPage from "@/pages/ConnectionErrorPage";
 import ChatPage from "@/pages/ChatPage";
 import BansPage from "@/pages/BansPage";
 import DevicesPage from "@/pages/DevicesPage";
+import DevicePage from "@/pages/DevicePage";
 import ItemsPage from "@/pages/ItemsPage";
 import NotAuthorizedPage from "@/pages/NotAuthorizedPage";
 import PlayersPage from "@/pages/PlayersPage";
@@ -29,6 +30,7 @@ const Routes: React.FC = () => (
     <Route path="/players" exact component={PlayersPage} />
     <Route path="/bans" exact component={BansPage} />
     <Route path="/devices" exact component={DevicesPage} />
+    <Route path="/devices/:referenceId" exact component={DevicePage} />
     <Route path="/items" exact component={ItemsPage} />
     {/* Having this here breaks all redirects; Switch will select null for it's child */}
     {/* <RedirectIfLoggedIn to="/server" /> */}

@@ -10,7 +10,8 @@ import {
   PlayerPayload,
   ItemPayload,
   ChatPayload,
-  BanPayload
+  BanPayload,
+  LogicValuePayload
 } from "./payloads";
 
 export type ApiFunction<TResult, TArgs extends any[]> = (
@@ -307,6 +308,53 @@ export async function getDevices(
   }
 
   const result: DevicePayload[] = await response.json();
+  return result;
+}
+
+export async function getDevice(
+  webapiServerUrl: string,
+  authorization: string,
+  referenceId: string
+): Promise<DevicePayload> {
+  const url = new URL(webapiServerUrl);
+  url.pathname = `devices/${referenceId}`;
+
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    headers: {
+      Authorization: authorization
+    }
+  });
+  if (response.status !== HttpStatusCodes.OK) {
+    throw new WebAPIError(response.status, response.statusText);
+  }
+
+  const result: DevicePayload = await response.json();
+  return result;
+}
+
+export async function setDeviceLogic(
+  webapiServerUrl: string,
+  authorization: string,
+  referenceId: string,
+  logicType: string,
+  logicValue: number
+): Promise<LogicValuePayload> {
+  const url = new URL(webapiServerUrl);
+  url.pathname = `devices/${referenceId}/logicValues/${logicType}`;
+
+  const response = await fetch(url.toString(), {
+    method: "POST",
+    headers: {
+      Authorization: authorization
+    },
+    body: JSON.stringify({ value: logicValue })
+  });
+  if (response.status !== HttpStatusCodes.OK) {
+    throw new WebAPIError(response.status, response.statusText);
+  }
+
+  const result: LogicValuePayload = await response.json();
   return result;
 }
 

@@ -49,3 +49,7 @@ export interface ItemPayload extends ThingPayload {
   parentSlotId: number;
   quantityText: string;
 }
+
+export interface LogicValuePayload {
+  value: number;
+}
