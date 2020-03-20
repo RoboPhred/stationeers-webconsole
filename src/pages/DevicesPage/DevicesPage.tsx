@@ -66,7 +66,7 @@ const DevicesPage: React.FC = () => {
     return (
       <PageContainer title={t("pages.devices.title")}>
         <RequireLogin />
-        <ErrorPageContent errorMessage={devicesData.errorMessage} />;
+        <ErrorPageContent errorMessage={devicesData.errorMessage} />
       </PageContainer>
     );
   } else if (!devicesData.isLoaded) {

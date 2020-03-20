@@ -77,6 +77,7 @@
     "confirm": "Confirm"
   },
   "errors": {
+    "generic_title": "An Error Occurred",
     "must_be_number": "Value must be a number."
   },
   "view-github": "View project on GitHub"
