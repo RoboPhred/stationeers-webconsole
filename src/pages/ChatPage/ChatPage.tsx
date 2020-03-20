@@ -20,7 +20,7 @@ const ChatPage: React.FC = () => {
   } else if (chatData.errorMessage) {
     content = <ErrorPageContent errorMessage={chatData.errorMessage} />;
   } else {
-    return <LoadingPageContent />;
+    content = <LoadingPageContent />;
   }
 
   return (

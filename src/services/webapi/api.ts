@@ -345,9 +345,9 @@ export async function setDevice(
   const response = await fetch(url.toString(), {
     method: "POST",
     headers: {
-      Authorization: authorization,
+      Authorization: authorization
     },
-    body: JSON.stringify(body);
+    body: JSON.stringify(body)
   });
   if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
@@ -356,7 +356,6 @@ export async function setDevice(
   const result: DevicePayload = await response.json();
   return result;
 }
-
 
 export async function setDeviceLogic(
   webapiServerUrl: string,

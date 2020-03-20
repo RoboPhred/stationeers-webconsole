@@ -92,7 +92,7 @@ const DevicesPageContent: React.FC<DevicesPageContentProps> = ({ devices }) => {
                   />
                 </div>
               </TableCell>
-              <TableCell>{t("pages.devices.prefab_type")}</TableCell>
+              <TableCell>{t("things.prefab_type")}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

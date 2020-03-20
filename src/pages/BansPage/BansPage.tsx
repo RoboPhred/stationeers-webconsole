@@ -19,7 +19,7 @@ const BansPage: React.FC = () => {
   } else if (banData.errorMessage) {
     content = <ErrorPageContent errorMessage={banData.errorMessage} />;
   } else {
-    return <LoadingPageContent />;
+    content = <LoadingPageContent />;
   }
 
   return (

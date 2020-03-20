@@ -20,7 +20,7 @@ const ServerPage: React.FC = () => {
   } else if (serverData.errorMessage) {
     content = <ErrorPageContent errorMessage={serverData.errorMessage} />;
   } else {
-    return <LoadingPageContent />;
+    content = <LoadingPageContent />;
   }
 
   return (

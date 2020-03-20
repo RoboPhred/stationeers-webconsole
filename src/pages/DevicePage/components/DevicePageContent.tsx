@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 
+import { makeStyles, Theme } from "@material-ui/core/styles";
+
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Tabs from "@material-ui/core/Tabs";
@@ -9,18 +11,25 @@ import Tab from "@material-ui/core/Tab";
 import { UseDevice } from "@/services/webapi/hooks/useDevice";
 import { PopulatedApiData } from "@/services/webapi/hooks/useApiData";
 
-import PageContainer from "@/components/PageContainer";
 import CommitTextField from "@/components/CommitTextField";
 
 export type DevicePageContentProps = PopulatedApiData<UseDevice>;
 
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    padding: theme.spacing()
+  },
+  section: {
+    padding: theme.spacing()
+  }
+}));
+
 const DevicePageContent: React.FC<DevicePageContentProps> = ({
-  referenceId,
-  displayName,
   customName,
   prefabName,
   setCustomName
 }) => {
+  const classes = useStyles();
   const { t } = useTranslation();
   const [tab, setTab] = React.useState(0);
 
@@ -29,19 +38,17 @@ const DevicePageContent: React.FC<DevicePageContentProps> = ({
   }, []);
 
   return (
-    <PageContainer
-      back
-      title={t("pages.device.title_named", {
-        displayName,
-        referenceId
-      })}
-    >
-      <Typography variant="caption">{prefabName}</Typography>
-      <CommitTextField
-        label={t("pages.device.labeler_name")}
-        value={customName}
-        onCommit={setCustomName}
-      />
+    <div className={classes.root}>
+      <div className={classes.section}>
+        <Typography variant="caption">{t("things.prefab_type")}</Typography>
+        <Typography variant="h6">{prefabName}</Typography>
+      </div>
+      <div className={classes.section}>
+        <Typography variant="caption">
+          {t("pages.device.labeler_name")}
+        </Typography>
+        <CommitTextField value={customName} onCommit={setCustomName} />
+      </div>
       <Paper square>
         <Tabs textColor="secondary" value={tab} onChange={onTabChange}>
           <Tab label={t("pages.device.logic")}>TODO logic</Tab>
@@ -50,7 +57,7 @@ const DevicePageContent: React.FC<DevicePageContentProps> = ({
           </Tab>
         </Tabs>
       </Paper>
-    </PageContainer>
+    </div>
   );
 };
 export default DevicePageContent;

@@ -55,8 +55,7 @@
     },
     "devices": {
       "title": "Devices",
-      "device_name": "Device Name",
-      "prefab_type": "Prefab Type"
+      "device_name": "Device Name"
     },
     "device": {
       "title": "Device",
@@ -71,6 +70,9 @@
   },
   "steam": {
     "steam_id": "Steam ID"
+  },
+  "things": {
+    "prefab_type": "Prefab Type"
   },
   "verbs": {
     "loading": "Loading",

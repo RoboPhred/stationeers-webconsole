@@ -38,7 +38,7 @@ const DevicePage: React.FC<DevicePageProps> = ({
   } else if (deviceData.errorMessage) {
     content = <ErrorPageContent errorMessage={deviceData.errorMessage} />;
   } else {
-    return <LoadingPageContent />;
+    content = <LoadingPageContent />;
   }
 
   return (

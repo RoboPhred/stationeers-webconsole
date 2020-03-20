@@ -20,7 +20,7 @@ const DevicesPage: React.FC = () => {
   } else if (devicesData.errorMessage) {
     content = <ErrorPageContent errorMessage={devicesData.errorMessage} />;
   } else {
-    return <LoadingPageContent />;
+    content = <LoadingPageContent />;
   }
 
   return (

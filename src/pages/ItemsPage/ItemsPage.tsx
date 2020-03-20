@@ -20,7 +20,7 @@ const ItemsPage: React.FC = () => {
   } else if (itemsData.errorMessage) {
     content = <ErrorPageContent errorMessage={itemsData.errorMessage} />;
   } else {
-    return <LoadingPageContent />;
+    content = <LoadingPageContent />;
   }
 
   return (
