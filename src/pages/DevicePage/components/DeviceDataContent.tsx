@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 
+import Typography from "@material-ui/core/Typography";
+
 import { UseDevice } from "@/services/webapi/hooks/useDevice";
 import { PopulatedApiData } from "@/services/webapi/hooks/useApiData";
 
@@ -19,10 +21,11 @@ const DeviceDataContent: React.FC<DeviceDataContentProps> = ({
       back
       title={t("pages.device.title_named", {
         displayName,
-        prefabName,
         referenceId
       })}
-    ></PageContainer>
+    >
+      <Typography variant="caption">{prefabName}</Typography>
+    </PageContainer>
   );
 };
 export default DeviceDataContent;

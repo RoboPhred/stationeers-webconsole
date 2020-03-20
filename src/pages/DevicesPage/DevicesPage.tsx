@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
+import { Link as RouterLink } from "react-router-dom";
 
 import { Theme, makeStyles } from "@material-ui/core/styles";
 
@@ -13,6 +14,7 @@ import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Link from "@material-ui/core/Link";
 
 import { Order, flipOrder, stableSort, getComparator } from "@/sort-utils";
 
@@ -119,7 +121,14 @@ const DevicesPage: React.FC = () => {
             <TableBody>
               {sortedDevices.map(device => (
                 <TableRow key={device.referenceId}>
-                  <TableCell>{device.displayName}</TableCell>
+                  <TableCell>
+                    <Link
+                      component={RouterLink}
+                      to={`/devices/${device.referenceId}`}
+                    >
+                      {device.displayName}
+                    </Link>
+                  </TableCell>
                   <TableCell>{device.prefabName}</TableCell>
                 </TableRow>
               ))}

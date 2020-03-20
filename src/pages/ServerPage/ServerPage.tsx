@@ -11,8 +11,7 @@ import { useServer } from "@/services/webapi/hooks/useServer";
 import PageContainer from "@/components/PageContainer";
 import RequireLogin from "@/components/RequireWebapiAuthorization";
 import ErrorPageContent from "@/components/ErrorPageContent";
-
-import ServerStringEditable from "./components/ServerStringEditable";
+import CommitTextField from "@/components/CommitTextField";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -44,7 +43,15 @@ const ServerPage: React.FC = () => {
     );
   }
 
-  const { name, setName, mapName, maxPlayers, password, refresh } = server;
+  const {
+    name,
+    setName,
+    mapName,
+    maxPlayers,
+    password,
+    setPassword,
+    refresh
+  } = server;
 
   return (
     <PageContainer title={t("pages.server.title")}>
@@ -54,17 +61,25 @@ const ServerPage: React.FC = () => {
         {!server && <Typography>{t("verbs.loading")}</Typography>}
         {server && (
           <>
-            <ServerStringEditable
-              title={t("pages.server.server_name")}
-              editTitle={t("pages.server.verbs.edit_server_name")}
-              value={name}
-              onValueChanged={setName}
-            />
             <div className={classes.section}>
-              <Typography variant="caption">
-                {t("pages.server.password")}
-              </Typography>
-              <Typography variant="h6">{password}</Typography>
+              <div>
+                <Typography variant="caption">
+                  {t("pages.server.server_name")}
+                </Typography>
+              </div>
+              <div>
+                <CommitTextField value={name} onCommit={setName} />
+              </div>
+            </div>
+            <div className={classes.section}>
+              <div>
+                <Typography variant="caption">
+                  {t("pages.server.password")}
+                </Typography>
+              </div>
+              <div>
+                <CommitTextField value={password} onCommit={setPassword} />
+              </div>
             </div>
             <div className={classes.section}>
               <Typography variant="caption">

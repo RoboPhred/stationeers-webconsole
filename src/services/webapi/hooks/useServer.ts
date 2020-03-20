@@ -8,6 +8,7 @@ import { UseApiData, useApiData } from "./useApiData";
 
 export interface UseServerFunctions {
   setName(name: string): void;
+  setPassword(password: string): void;
 }
 export type UseServer = UseApiData<ServerPayload & UseServerFunctions>;
 
@@ -27,8 +28,16 @@ export function useServer(): UseServer {
     [postServer, refresh]
   );
 
+  const setPassword = React.useCallback(
+    (password: string) => {
+      postServer({ password }).then(refresh);
+    },
+    [postServer, refresh]
+  );
+
   if (result.isLoaded) {
     result.setName = setName;
+    result.setPassword = setPassword;
   }
 
   return result;
