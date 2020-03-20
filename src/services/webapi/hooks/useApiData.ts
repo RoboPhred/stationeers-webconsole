@@ -1,6 +1,9 @@
 import * as React from "react";
+
 import { ApiFunction } from "../api";
+
 import { useApiCall } from "./useApiCall";
+import { useRefreshTimer } from "./useRefreshTimer";
 
 export interface UseApiCommon {
   refresh(): void;
@@ -75,6 +78,10 @@ export function useApiData<
   const refresh = React.useCallback(() => {
     setRefreshCounter(refreshCounter + 1);
   }, [refreshCounter]);
+
+  // TODO: Probably want different times for different api.
+  // Bans need not auto update, chat should auto update more often than devices
+  useRefreshTimer(refresh);
 
   if (!result) {
     return {
