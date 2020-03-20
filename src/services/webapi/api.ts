@@ -141,7 +141,7 @@ export async function getServer(
   return result;
 }
 
-export async function postServer(
+export async function setServer(
   webapiServerUrl: string,
   authorization: string,
   body: Partial<ServerPayload>
@@ -332,6 +332,31 @@ export async function getDevice(
   const result: DevicePayload = await response.json();
   return result;
 }
+
+export async function setDevice(
+  webapiServerUrl: string,
+  authorization: string,
+  referenceId: string,
+  body: Partial<DevicePayload>
+): Promise<DevicePayload> {
+  const url = new URL(webapiServerUrl);
+  url.pathname = `devices/${referenceId}`;
+
+  const response = await fetch(url.toString(), {
+    method: "POST",
+    headers: {
+      Authorization: authorization,
+    },
+    body: JSON.stringify(body);
+  });
+  if (response.status !== HttpStatusCodes.OK) {
+    throw new WebAPIError(response.status, response.statusText);
+  }
+
+  const result: DevicePayload = await response.json();
+  return result;
+}
+
 
 export async function setDeviceLogic(
   webapiServerUrl: string,

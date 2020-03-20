@@ -7,13 +7,16 @@ import { UseDevice } from "@/services/webapi/hooks/useDevice";
 import { PopulatedApiData } from "@/services/webapi/hooks/useApiData";
 
 import PageContainer from "@/components/PageContainer";
+import CommitTextField from "@/components/CommitTextField";
 
 export type DevicePageContentProps = PopulatedApiData<UseDevice>;
 
 const DevicePageContent: React.FC<DevicePageContentProps> = ({
+  referenceId,
   displayName,
+  customName,
   prefabName,
-  referenceId
+  setCustomName
 }) => {
   const { t } = useTranslation();
   return (
@@ -25,6 +28,11 @@ const DevicePageContent: React.FC<DevicePageContentProps> = ({
       })}
     >
       <Typography variant="caption">{prefabName}</Typography>
+      <CommitTextField
+        label={t("pages.device.labeler_name")}
+        value={customName}
+        onCommit={setCustomName}
+      />
     </PageContainer>
   );
 };

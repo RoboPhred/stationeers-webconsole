@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { ServerPayload } from "../payloads";
-import { getServer, postServer as apiPostServer } from "../api";
+import { getServer, setServer as apiPostServer } from "../api";
 
 import { useApiCall } from "./useApiCall";
 import { UseApiData, useApiData } from "./useApiData";

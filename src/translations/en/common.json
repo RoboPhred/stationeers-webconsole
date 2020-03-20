@@ -60,7 +60,8 @@
     },
     "device": {
       "title": "Device",
-      "title_named": "{{displayName}} ({{referenceId}}) - Device"
+      "title_named": "{{displayName}} ({{referenceId}}) - Device",
+      "labeler_name": "Labeler Name"
     },
     "items": {
       "title": "Items"
