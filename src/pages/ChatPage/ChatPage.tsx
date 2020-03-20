@@ -1,26 +1,26 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 
-import CircularProgress from "@material-ui/core/CircularProgress";
-
 import { useChat } from "@/services/webapi/hooks/useChat";
 
 import PageContainer from "@/components/PageContainer";
 import RequireLogin from "@/components/RequireWebapiAuthorization";
 import ErrorPageContent from "@/components/ErrorPageContent";
+import LoadingPageContent from "@/components/LoadingPageContent";
+
+import ChatPageContent from "./components/ChatPageContent";
 
 const ChatPage: React.FC = () => {
   const { t } = useTranslation();
-
   const chatData = useChat();
 
   let content: React.ReactChild;
-  if (chatData.errorMessage) {
+  if (chatData.isLoaded) {
+    content = <ChatPageContent {...chatData} />;
+  } else if (chatData.errorMessage) {
     content = <ErrorPageContent errorMessage={chatData.errorMessage} />;
-  } else if (!chatData.isLoaded) {
-    return <CircularProgress />;
   } else {
-    content = <pre>{JSON.stringify(chatData.chat)}</pre>;
+    return <LoadingPageContent />;
   }
 
   return (

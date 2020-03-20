@@ -1,141 +1,32 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import { Link as RouterLink } from "react-router-dom";
-
-import { Theme, makeStyles } from "@material-ui/core/styles";
-
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Link from "@material-ui/core/Link";
-
-import { Order, flipOrder, stableSort, getComparator } from "@/sort-utils";
 
 import { useDevices } from "@/services/webapi/hooks/useDevices";
-import { DevicePayload } from "@/services/webapi/payloads";
 
 import PageContainer from "@/components/PageContainer";
 import RequireLogin from "@/components/RequireWebapiAuthorization";
 import ErrorPageContent from "@/components/ErrorPageContent";
+import LoadingPageContent from "@/components/LoadingPageContent";
 
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    width: "100%",
-    height: "100%",
-    padding: theme.spacing(),
-    overflow: "auto"
-  }
-}));
+import DevicesPageContent from "./components/DevicesPageContent";
 
 const DevicesPage: React.FC = () => {
   const { t } = useTranslation();
-  const classes = useStyles();
-
-  const [order, setOrder] = React.useState<Order>(Order.Ascending);
-  const [orderBy, setOrderBy] = React.useState<keyof DevicePayload>(
-    "displayName"
-  );
-  const [deviceNameFilter, setDeviceNameFilter] = React.useState<string>("");
-
-  const onDeviceNameFilterChanged = React.useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setDeviceNameFilter(e.target.value);
-    },
-    []
-  );
-
-  const onSortByName = React.useCallback(() => {
-    if (orderBy !== "displayName") {
-      setOrderBy("displayName");
-      setOrder(Order.Ascending);
-    } else {
-      setOrder(flipOrder(order));
-    }
-  }, [order, orderBy]);
-
   const devicesData = useDevices();
 
-  if (devicesData.errorMessage) {
-    return (
-      <PageContainer title={t("pages.devices.title")}>
-        <RequireLogin />
-        <ErrorPageContent errorMessage={devicesData.errorMessage} />
-      </PageContainer>
-    );
-  } else if (!devicesData.isLoaded) {
-    return (
-      <PageContainer title={t("pages.devices.title")}>
-        <RequireLogin />
-        <CircularProgress />
-      </PageContainer>
-    );
+  let content: React.ReactChild;
+  if (devicesData.isLoaded) {
+    content = <DevicesPageContent {...devicesData} />;
+  } else if (devicesData.errorMessage) {
+    content = <ErrorPageContent errorMessage={devicesData.errorMessage} />;
+  } else {
+    return <LoadingPageContent />;
   }
 
-  const { devices } = devicesData;
-
-  const filteredDevices = devices.filter(x =>
-    deviceNameFilter === ""
-      ? true
-      : x.displayName.indexOf(deviceNameFilter) != -1
-  );
-  const sortedDevices = stableSort(
-    filteredDevices,
-    getComparator(order, orderBy)
-  );
-
   return (
-    <PageContainer title={t("pages.devices.title")}>
+    <PageContainer title={t("pages.chat.title")}>
       <RequireLogin />
-      <div className={classes.root}>
-        <TableContainer component={Paper}>
-          <Table stickyHeader>
-            <TableHead>
-              <TableRow>
-                <TableCell>
-                  <TableSortLabel
-                    active={orderBy === "displayName"}
-                    direction={orderBy === "displayName" ? order : "asc"}
-                    onClick={onSortByName}
-                  >
-                    {t("pages.devices.device_name")}
-                  </TableSortLabel>
-                  <div>
-                    <TextField
-                      label="Filter"
-                      margin="none"
-                      value={deviceNameFilter}
-                      onChange={onDeviceNameFilterChanged}
-                    />
-                  </div>
-                </TableCell>
-                <TableCell>{t("pages.devices.prefab_type")}</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {sortedDevices.map(device => (
-                <TableRow key={device.referenceId}>
-                  <TableCell>
-                    <Link
-                      component={RouterLink}
-                      to={`/devices/${device.referenceId}`}
-                    >
-                      {device.displayName}
-                    </Link>
-                  </TableCell>
-                  <TableCell>{device.prefabName}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
+      {content}
     </PageContainer>
   );
 };

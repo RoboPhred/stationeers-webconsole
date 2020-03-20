@@ -1,13 +1,15 @@
 import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { useDevice } from "@/services/webapi/hooks/useDevice";
 
 import RequireLogin from "@/components/RequireWebapiAuthorization";
+import PageContainer from "@/components/PageContainer";
+import ErrorPageContent from "@/components/ErrorPageContent";
+import LoadingPageContent from "@/components/LoadingPageContent";
 
-import DeviceLoadingContent from "./components/DeviceLoadingContent";
-import DeviceErrorContent from "./components/DeviceErrorContent";
-import DeviceDataContent from "./components/DeviceDataContent";
+import DevicePageContent from "./components/DevicePageContent";
 
 export interface DevicePageParams {
   referenceId: string;
@@ -20,21 +22,30 @@ const DevicePage: React.FC<DevicePageProps> = ({
     params: { referenceId }
   }
 }) => {
+  const { t } = useTranslation();
   const deviceData = useDevice(referenceId);
+
+  const title = deviceData.isLoaded
+    ? t("pages.device.title_named", {
+        displayName: deviceData.displayName,
+        referenceId: deviceData.referenceId
+      })
+    : t("pages.device.title");
 
   let content: React.ReactChild;
   if (deviceData.isLoaded) {
-    content = <DeviceDataContent {...deviceData} />;
+    content = <DevicePageContent {...deviceData} />;
   } else if (deviceData.errorMessage) {
-    content = <DeviceErrorContent errorMessage={deviceData.errorMessage} />;
+    content = <ErrorPageContent errorMessage={deviceData.errorMessage} />;
   } else {
-    content = <DeviceLoadingContent />;
+    return <LoadingPageContent />;
   }
+
   return (
-    <>
+    <PageContainer back title={title}>
       <RequireLogin />
       {content}
-    </>
+    </PageContainer>
   );
 };
 

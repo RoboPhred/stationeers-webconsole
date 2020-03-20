@@ -8,9 +8,9 @@ import { PopulatedApiData } from "@/services/webapi/hooks/useApiData";
 
 import PageContainer from "@/components/PageContainer";
 
-export type DeviceDataContentProps = PopulatedApiData<UseDevice>;
+export type DevicePageContentProps = PopulatedApiData<UseDevice>;
 
-const DeviceDataContent: React.FC<DeviceDataContentProps> = ({
+const DevicePageContent: React.FC<DevicePageContentProps> = ({
   displayName,
   prefabName,
   referenceId
@@ -28,4 +28,4 @@ const DeviceDataContent: React.FC<DeviceDataContentProps> = ({
     </PageContainer>
   );
 };
-export default DeviceDataContent;
+export default DevicePageContent;
