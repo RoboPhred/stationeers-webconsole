@@ -61,7 +61,9 @@
     "device": {
       "title": "Device",
       "title_named": "{{displayName}} ({{referenceId}}) - Device",
-      "labeler_name": "Labeler Name"
+      "labeler_name": "Labeler Name",
+      "logic": "Logic",
+      "access_control": "Access Control"
     },
     "items": {
       "title": "Items"

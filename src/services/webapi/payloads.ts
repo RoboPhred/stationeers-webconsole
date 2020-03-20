@@ -40,7 +40,7 @@ export interface ThingPayload {
 
 export interface DevicePayload extends ThingPayload {
   displayName: string;
-  logicValues: Record<string, number>;
+  logicTypes: Record<string, LogicValuePayload>;
   slotValues: Record<number, Record<string, number>>;
 }
 
@@ -52,4 +52,5 @@ export interface ItemPayload extends ThingPayload {
 
 export interface LogicValuePayload {
   value: number;
+  writable: boolean;
 }
