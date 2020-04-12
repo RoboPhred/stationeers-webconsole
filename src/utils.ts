@@ -47,3 +47,11 @@ function clone<T extends object | any[]>(obj: T): T {
   }
   return { ...obj };
 }
+
+export function cls(
+  ...classNames: (string | false | null | undefined)[]
+): string {
+  return classNames
+    .filter((x) => typeof x === "string" && x.length > 0)
+    .join(" ");
+}

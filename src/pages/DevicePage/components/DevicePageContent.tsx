@@ -12,22 +12,31 @@ import { UseDevice } from "@/services/webapi/hooks/useDevice";
 import { PopulatedApiData } from "@/services/webapi/hooks/useApiData";
 
 import CommitTextField from "@/components/CommitTextField";
+import ThingAccessEditor from "@/components/ThingAccessEditor";
 
 export type DevicePageContentProps = PopulatedApiData<UseDevice>;
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    padding: theme.spacing()
+    padding: theme.spacing(),
+    width: "100%",
+    height: "100%",
   },
   section: {
-    padding: theme.spacing()
-  }
+    padding: theme.spacing(),
+  },
+  tabContent: {
+    width: "100%",
+    height: "100%",
+    overflow: "auto",
+  },
 }));
 
 const DevicePageContent: React.FC<DevicePageContentProps> = ({
+  referenceId,
   customName,
   prefabName,
-  setCustomName
+  setCustomName,
 }) => {
   const classes = useStyles();
   const { t } = useTranslation();
@@ -47,15 +56,19 @@ const DevicePageContent: React.FC<DevicePageContentProps> = ({
         <Typography variant="caption">
           {t("pages.device.labeler_name")}
         </Typography>
-        <CommitTextField value={customName} onCommit={setCustomName} />
+        <div>
+          <CommitTextField value={customName || ""} onCommit={setCustomName} />
+        </div>
       </div>
       <Paper square>
         <Tabs textColor="secondary" value={tab} onChange={onTabChange}>
-          <Tab label={t("pages.device.logic")}>TODO logic</Tab>
-          <Tab label={t("pages.device.access_control")}>
-            TODO access control
-          </Tab>
+          <Tab label={t("pages.device.logic")} />
+          <Tab label={t("pages.device.access_control")} />
         </Tabs>
+        <div className={classes.tabContent}>
+          {tab === 0 && <span>TODO logic</span>}
+          {tab === 1 && <ThingAccessEditor referenceId={referenceId} />}
+        </div>
       </Paper>
     </div>
   );

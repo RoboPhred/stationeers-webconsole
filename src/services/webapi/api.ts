@@ -11,7 +11,9 @@ import {
   ItemPayload,
   ChatPayload,
   BanPayload,
-  LogicValuePayload
+  LogicValuePayload,
+  AnyThingPayload,
+  ThingPayload
 } from "./payloads";
 
 export type ApiFunction<TResult, TArgs extends any[]> = (
@@ -287,6 +289,52 @@ export async function getChat(
   }
 
   const result: ChatPayload[] = await response.json();
+  return result;
+}
+
+export async function getThing(
+  webapiServerUrl: string,
+  authorization: string,
+  referenceId: string
+): Promise<AnyThingPayload> {
+  const url = new URL(webapiServerUrl);
+  url.pathname = `things/${referenceId}`;
+
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    headers: {
+      Authorization: authorization
+    }
+  });
+  if (response.status !== HttpStatusCodes.OK) {
+    throw new WebAPIError(response.status, response.statusText);
+  }
+
+  const result: AnyThingPayload = await response.json();
+  return result;
+}
+
+export async function setThing(
+  webapiServerUrl: string,
+  authorization: string,
+  referenceId: string,
+  payload: Partial<ThingPayload>
+): Promise<AnyThingPayload> {
+  const url = new URL(webapiServerUrl);
+  url.pathname = `things/${referenceId}`;
+
+  const response = await fetch(url.toString(), {
+    method: "POST",
+    headers: {
+      Authorization: authorization
+    },
+    body: JSON.stringify(payload)
+  });
+  if (response.status !== HttpStatusCodes.OK) {
+    throw new WebAPIError(response.status, response.statusText);
+  }
+
+  const result: AnyThingPayload = await response.json();
   return result;
 }
 

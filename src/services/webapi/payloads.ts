@@ -28,7 +28,8 @@ export interface ChatPayload {
   message: string;
 }
 
-export interface ThingPayload {
+export interface ThingPayloadBase {
+  type: string;
   referenceId: string;
   prefabHash: number;
   health: number;
@@ -38,17 +39,25 @@ export interface ThingPayload {
   slotReferenceIds: Record<number, string>;
 }
 
-export interface DevicePayload extends ThingPayload {
+export interface ThingPayload extends ThingPayloadBase {
+  type: "thing";
+}
+
+export interface DevicePayload extends ThingPayloadBase {
+  type: "device";
   displayName: string;
   logicTypes: Record<string, LogicValuePayload>;
   slotValues: Record<number, Record<string, number>>;
 }
 
-export interface ItemPayload extends ThingPayload {
+export interface ItemPayload extends ThingPayloadBase {
+  type: "item";
   parentSlotReferenceId: string;
   parentSlotId: number;
   quantityText: string;
 }
+
+export type AnyThingPayload = ThingPayload | DevicePayload | ItemPayload;
 
 export interface LogicValuePayload {
   value: number;

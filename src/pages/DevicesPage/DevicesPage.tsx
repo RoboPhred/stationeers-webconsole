@@ -24,7 +24,7 @@ const DevicesPage: React.FC = () => {
   }
 
   return (
-    <PageContainer title={t("pages.chat.title")}>
+    <PageContainer title={t("pages.devices.title")}>
       <RequireLogin />
       {content}
     </PageContainer>

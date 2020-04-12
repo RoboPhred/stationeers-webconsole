@@ -17,7 +17,7 @@ export function useDevice(referenceId: string): UseDevice {
   const setLogicCall = useApiCall(setDeviceLogic);
   const result = useApiData(
     getDevice,
-    result => ({ ...result }),
+    (result) => ({ ...result }),
     referenceId
   ) as UseDevice;
   const { refresh } = result;
@@ -30,7 +30,10 @@ export function useDevice(referenceId: string): UseDevice {
   );
 
   const setCustomName = React.useCallback(
-    (name: string) => {
+    (name: string | null) => {
+      if (name === "") {
+        name = null;
+      }
       setDeviceCall(referenceId, { customName: name }).then(refresh);
     },
     [referenceId, setDeviceCall, refresh]
