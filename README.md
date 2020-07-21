@@ -17,7 +17,6 @@ This is a web control panel for Stationeers. It uses stationeers-webapi as its b
 - Auto refresh pages
 - Ability to spawn in items
 - Ability to send chat messages
-- Permission system - disallow players deconstructing other players stuff based on allow list (needs backend support)
 - Refresh button in app bar
 - Show errors when trying to make changes
 

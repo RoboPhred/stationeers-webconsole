@@ -5,7 +5,6 @@ import { AUTHENTICATION_CALLBACK_ROUTE } from "@/routes";
 import { WebAPIError } from "./errors";
 import {
   SettingsPayload,
-  LoginPayload,
   DevicePayload,
   PlayerPayload,
   ItemPayload,

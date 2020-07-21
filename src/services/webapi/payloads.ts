@@ -1,8 +1,3 @@
-export interface LoginPayload {
-  steamId: string;
-  authorization: string;
-}
-
 export interface SettingsPayload {
   name: string;
   mapName: string;

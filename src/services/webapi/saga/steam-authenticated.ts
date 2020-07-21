@@ -4,11 +4,10 @@ import HttpStatusCodes from "http-status-codes";
 
 import {
   STEAM_AUTHENTICATED_ACTION,
-  SteamAuthenticatedAction
+  SteamAuthenticatedAction,
 } from "@/actions/steam-authenticated";
 import { webapiAuthenticated } from "@/actions/webapi-authenticated";
 
-import { LoginPayload } from "../payloads";
 import { authenticateOpenID } from "../api";
 
 export default function* steamAuthenticatedSaga() {
@@ -19,7 +18,7 @@ function* handleSteamAuthenticated(action: SteamAuthenticatedAction) {
   const { queryString } = action.payload;
   const serverAddress = DEFAULT_WEBAPI_URL; // TODO: Get from configuration
   try {
-    const payload: LoginPayload = yield call(
+    const payload: PromiseReturnType<typeof authenticateOpenID> = yield call(
       authenticateOpenID,
       serverAddress,
       queryString
