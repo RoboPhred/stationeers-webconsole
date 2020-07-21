@@ -3,7 +3,7 @@ export interface LoginPayload {
   authorization: string;
 }
 
-export interface ServerPayload {
+export interface SettingsPayload {
   name: string;
   mapName: string;
   maxPlayers: number;

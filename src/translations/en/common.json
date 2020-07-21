@@ -18,8 +18,8 @@
     "authentication-callback": {
       "title": "Authenticating"
     },
-    "server": {
-      "title": "Server",
+    "settings": {
+      "title": "Settings",
       "server_name": "Server Name",
       "map_name": "Map Name",
       "max_players": "Max Players",

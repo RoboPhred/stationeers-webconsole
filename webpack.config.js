@@ -14,7 +14,7 @@ const PATHS = {
   appSrc: path.resolve(root, "./src"),
   appDist: path.resolve(root, "./dist"),
   nodeModules: path.resolve(root, "./node_modules"),
-  changelog: path.resolve(root, "./CHANGELOG.md")
+  changelog: path.resolve(root, "./CHANGELOG.md"),
 };
 
 const PUBLIC_URL_HOST = isDev
@@ -23,7 +23,7 @@ const PUBLIC_URL_HOST = isDev
 const PUBLIC_URL_PATH = isDev ? "/" : "/stationeers-webportal/";
 const PUBLIC_URL = `${PUBLIC_URL_HOST}${PUBLIC_URL_PATH}`;
 
-const DEFAULT_WEBAPI_URL = "http://127.0.0.1:4444";
+const DEFAULT_WEBAPI_URL = "http://127.0.0.1:27016/api";
 
 console.log("Webpack build", isDev ? "[development]" : "[production]");
 
@@ -36,25 +36,25 @@ module.exports = {
     contentBase: PATHS.appDist,
     hot: isDev,
     historyApiFallback: true,
-    https: true
+    https: true,
   },
 
   entry: {
-    client: [path.join(PATHS.appSrc, "./index.tsx")]
+    client: [path.join(PATHS.appSrc, "./index.tsx")],
   },
 
   output: {
     filename: "[name].[hash].bundle.js",
     path: PATHS.appBuild,
-    publicPath: PUBLIC_URL_PATH
+    publicPath: PUBLIC_URL_PATH,
   },
 
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json"],
     alias: {
       "@": PATHS.appSrc,
-      "@changelog": PATHS.changelog
-    }
+      "@changelog": PATHS.changelog,
+    },
   },
 
   module: {
@@ -63,21 +63,21 @@ module.exports = {
         enforce: "pre",
         test: /\.(jsx?|tsx?)$/,
         loader: "source-map-loader",
-        include: [/src\/.+\.tsx?/]
+        include: [/src\/.+\.tsx?/],
       },
 
       {
         test: /\.tsx?$/,
         use: [
           {
-            loader: "ts-loader"
-          }
-        ]
+            loader: "ts-loader",
+          },
+        ],
       },
 
       {
         test: /\.css$/,
-        loader: ["style-loader", "css-loader"]
+        loader: ["style-loader", "css-loader"],
       },
 
       {
@@ -87,45 +87,45 @@ module.exports = {
           options: {
             name: "fonts/[hash].[ext]",
             limit: 5000,
-            mimetype: "application/font-woff"
-          }
-        }
+            mimetype: "application/font-woff",
+          },
+        },
       },
       {
         test: /\.(ttf|eot|svg)$/,
         use: {
           loader: "file-loader",
           options: {
-            name: "fonts/[hash].[ext]"
-          }
-        }
+            name: "fonts/[hash].[ext]",
+          },
+        },
       },
 
       {
         test: /\.png/,
         loader: "file-loader",
         options: {
-          name: "images/[hash].[ext]"
-        }
+          name: "images/[hash].[ext]",
+        },
       },
 
       {
         test: /\.(txt|md)$/,
-        loader: "raw-loader"
-      }
-    ]
+        loader: "raw-loader",
+      },
+    ],
   },
 
   plugins: [
     new webpack.DefinePlugin({
       PUBLIC_URL: JSON.stringify(PUBLIC_URL),
-      DEFAULT_WEBAPI_URL: JSON.stringify(DEFAULT_WEBAPI_URL)
+      DEFAULT_WEBAPI_URL: JSON.stringify(DEFAULT_WEBAPI_URL),
     }),
 
     new HtmlWebpackPlugin({
       inject: true,
-      template: path.resolve(PATHS.appSrc, "index.ejs")
-    })
+      template: path.resolve(PATHS.appSrc, "index.ejs"),
+    }),
   ],
 
   optimization: {
@@ -135,16 +135,16 @@ module.exports = {
       cacheGroups: {
         npm: {
           test: /node_modules/,
-          name: mod => {
+          name: (mod) => {
             const relToModule = path.relative(PATHS.nodeModules, mod.context);
             const moduleName = relToModule.substring(
               0,
               relToModule.indexOf(path.sep)
             );
             return `npm.${moduleName}`;
-          }
-        }
-      }
-    }
-  }
+          },
+        },
+      },
+    },
+  },
 };

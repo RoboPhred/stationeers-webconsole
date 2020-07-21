@@ -11,7 +11,7 @@ import DevicePage from "@/pages/DevicePage";
 import ItemsPage from "@/pages/ItemsPage";
 import NotAuthorizedPage from "@/pages/NotAuthorizedPage";
 import PlayersPage from "@/pages/PlayersPage";
-import ServerPage from "@/pages/ServerPage";
+import SettingsPage from "@/pages/SettingsPage";
 
 export const AUTHENTICATION_CALLBACK_ROUTE = "authentication-callback";
 
@@ -25,7 +25,7 @@ const Routes: React.FC = () => (
     />
     <Route path="/not-authorized" exact component={NotAuthorizedPage} />
     <Route path="/connection-error" exact component={ConnectionErrorPage} />
-    <Route path="/server" exact component={ServerPage} />
+    <Route path="/settings" exact component={SettingsPage} />
     <Route path="/chat" exact component={ChatPage} />
     <Route path="/players" exact component={PlayersPage} />
     <Route path="/bans" exact component={BansPage} />

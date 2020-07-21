@@ -1,34 +1,34 @@
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 
-import { useServer } from "@/services/webapi/hooks/useServer";
+import { useSettings } from "@/services/webapi/hooks/useSettings";
 
 import PageContainer from "@/components/PageContainer";
 import RequireLogin from "@/components/RequireWebapiAuthorization";
 import ErrorPageContent from "@/components/ErrorPageContent";
 import LoadingPageContent from "@/components/LoadingPageContent";
 
-import ServerDataContent from "./components/ServerDataContent";
+import SettingsContent from "./components/SettingsContent";
 
-const ServerPage: React.FC = () => {
+const SettingsPage: React.FC = () => {
   const { t } = useTranslation();
-  const serverData = useServer();
+  const settings = useSettings();
 
   let content: React.ReactChild;
-  if (serverData.isLoaded) {
-    content = <ServerDataContent {...serverData} />;
-  } else if (serverData.errorMessage) {
-    content = <ErrorPageContent errorMessage={serverData.errorMessage} />;
+  if (settings.isLoaded) {
+    content = <SettingsContent {...settings} />;
+  } else if (settings.errorMessage) {
+    content = <ErrorPageContent errorMessage={settings.errorMessage} />;
   } else {
     content = <LoadingPageContent />;
   }
 
   return (
-    <PageContainer title={t("pages.items.title")}>
+    <PageContainer title={t("pages.settings.title")}>
       <RequireLogin />
       {content}
     </PageContainer>
   );
 };
 
-export default ServerPage;
+export default SettingsPage;

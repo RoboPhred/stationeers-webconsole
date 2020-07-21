@@ -6,35 +6,35 @@ export interface NavItem {
 
 const NavItems: NavItem[] = [
   {
-    path: "/server",
-    i18nKey: "pages.server.title",
-    requireWebapiConnection: true
+    path: "/settings",
+    i18nKey: "pages.settings.title",
+    requireWebapiConnection: true,
   },
   {
     path: "/players",
     i18nKey: "pages.players.title",
-    requireWebapiConnection: true
+    requireWebapiConnection: true,
   },
   {
     path: "/bans",
     i18nKey: "pages.bans.title",
-    requireWebapiConnection: true
+    requireWebapiConnection: true,
   },
   {
     path: "/chat",
     i18nKey: "pages.chat.title",
-    requireWebapiConnection: true
+    requireWebapiConnection: true,
   },
   {
     path: "/devices",
     i18nKey: "pages.devices.title",
-    requireWebapiConnection: true
+    requireWebapiConnection: true,
   },
   {
     path: "/items",
     i18nKey: "pages.items.title",
-    requireWebapiConnection: true
-  }
+    requireWebapiConnection: true,
+  },
 ];
 
 export default NavItems;

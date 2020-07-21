@@ -20,7 +20,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <PageContainer title={t("pages.login.title")}>
-      <RedirectIfLoggedIn to="/server" />
+      <RedirectIfLoggedIn to="/settings" />
       <Button onClick={onLoginClick}>{t("pages.login.login_button")}</Button>
     </PageContainer>
   );

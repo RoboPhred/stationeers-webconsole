@@ -4,7 +4,7 @@ import { AUTHENTICATION_CALLBACK_ROUTE } from "@/routes";
 
 import { WebAPIError } from "./errors";
 import {
-  ServerPayload,
+  SettingsPayload,
   LoginPayload,
   DevicePayload,
   PlayerPayload,
@@ -13,7 +13,7 @@ import {
   BanPayload,
   LogicValuePayload,
   AnyThingPayload,
-  ThingPayload
+  ThingPayload,
 } from "./payloads";
 
 export type ApiFunction<TResult, TArgs extends any[]> = (
@@ -46,24 +46,9 @@ export type AuthenticationResult =
 export async function authenticate(
   webapiServerUrl: string
 ): Promise<AuthenticationResult> {
-  const url = new URL(webapiServerUrl);
-  url.pathname = "login";
+  const url = appendPath(webapiServerUrl, "login");
 
-  const response = await fetch(url.toString(), { method: "GET" });
-  // This does not work, as redirects are handled by the browser and we cannot get the redirect url.
-  // if (response.status === HttpStatusCodes.TEMPORARY_REDIRECT) {
-  //   var location = response.headers.get("Location");
-  //   if (!location) {
-  //     throw new WebAPIError(
-  //       HttpStatusCodes.INTERNAL_SERVER_ERROR,
-  //       "Server returned redirect but no location header."
-  //     );
-  //   }
-  //   return {
-  //     type: "redirect",
-  //     location
-  //   };
-  // }
+  const response = await fetch(url, { method: "GET" });
 
   if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
@@ -74,7 +59,7 @@ export async function authenticate(
   if (body.location) {
     return {
       type: "redirect",
-      location: body.location
+      location: body.location,
     };
   }
 
@@ -88,7 +73,7 @@ export async function authenticate(
 
   return {
     type: "jwt",
-    authorization
+    authorization,
   };
 }
 
@@ -96,13 +81,12 @@ export async function authenticateOpenID(
   webapiServerUrl: string,
   openIdQuery: string
 ): Promise<JwtAutenticationResult> {
-  const url = new URL(webapiServerUrl);
-  url.pathname = "login";
-  url.search = openIdQuery;
+  let url = appendPath(webapiServerUrl, "login");
+  url = setUrlSearch(url, openIdQuery);
 
-  const response = await fetch(url.toString(), {
+  const response = await fetch(url, {
     method: "GET",
-    redirect: "manual"
+    redirect: "manual",
   });
   if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
@@ -118,51 +102,49 @@ export async function authenticateOpenID(
 
   return {
     type: "jwt",
-    authorization
+    authorization,
   };
 }
 
-export async function getServer(
+export async function getSettings(
   webapiServerUrl: string,
   authorization: string
-): Promise<ServerPayload> {
-  const url = new URL(webapiServerUrl);
-  url.pathname = "server";
+): Promise<SettingsPayload> {
+  const url = appendPath(webapiServerUrl, "settings");
 
-  const response = await fetch(url.toString(), {
+  const response = await fetch(url, {
     method: "GET",
     headers: {
-      Authorization: authorization
-    }
+      Authorization: authorization,
+    },
   });
   if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
   }
 
-  const result: ServerPayload = await response.json();
+  const result: SettingsPayload = await response.json();
   return result;
 }
 
-export async function setServer(
+export async function setSettings(
   webapiServerUrl: string,
   authorization: string,
-  body: Partial<ServerPayload>
-): Promise<ServerPayload> {
-  const url = new URL(webapiServerUrl);
-  url.pathname = "server";
+  body: Partial<SettingsPayload>
+): Promise<SettingsPayload> {
+  const url = appendPath(webapiServerUrl, "settings");
 
-  const response = await fetch(url.toString(), {
+  const response = await fetch(url, {
     method: "POST",
     headers: {
-      Authorization: authorization
+      Authorization: authorization,
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   });
   if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
   }
 
-  const result: ServerPayload = await response.json();
+  const result: SettingsPayload = await response.json();
   return result;
 }
 
@@ -170,14 +152,13 @@ export async function getPlayers(
   webapiServerUrl: string,
   authorization: string
 ): Promise<PlayerPayload[]> {
-  const url = new URL(webapiServerUrl);
-  url.pathname = "players";
+  const url = appendPath(webapiServerUrl, "players");
 
-  const response = await fetch(url.toString(), {
+  const response = await fetch(url, {
     method: "GET",
     headers: {
-      Authorization: authorization
-    }
+      Authorization: authorization,
+    },
   });
   if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
@@ -193,15 +174,14 @@ export async function kickPlayer(
   steamId: string,
   reason: string | null
 ): Promise<void> {
-  const url = new URL(webapiServerUrl);
-  url.pathname = `players/${steamId}/kick`;
+  const url = appendPath(webapiServerUrl, `players/${steamId}/kick`);
 
-  const response = await fetch(url.toString(), {
+  const response = await fetch(url, {
     method: "POST",
     headers: {
-      Authorization: authorization
+      Authorization: authorization,
     },
-    body: JSON.stringify({ reason })
+    body: JSON.stringify({ reason }),
   });
   if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
@@ -216,15 +196,14 @@ export async function banPlayer(
   reason: string | null,
   hours: number = 1
 ): Promise<void> {
-  const url = new URL(webapiServerUrl);
-  url.pathname = `players/${steamId}/ban`;
+  const url = appendPath(webapiServerUrl, `players/${steamId}/ban`);
 
-  const response = await fetch(url.toString(), {
+  const response = await fetch(url, {
     method: "POST",
     headers: {
-      Authorization: authorization
+      Authorization: authorization,
     },
-    body: JSON.stringify({ reason, hours })
+    body: JSON.stringify({ reason, hours }),
   });
   if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
@@ -236,14 +215,13 @@ export async function getBans(
   webapiServerUrl: string,
   authorization: string
 ): Promise<BanPayload[]> {
-  const url = new URL(webapiServerUrl);
-  url.pathname = `bans`;
+  const url = appendPath(webapiServerUrl, `bans`);
 
-  const response = await fetch(url.toString(), {
+  const response = await fetch(url, {
     method: "GET",
     headers: {
-      Authorization: authorization
-    }
+      Authorization: authorization,
+    },
   });
   if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
@@ -256,14 +234,13 @@ export async function removeBan(
   authorization: string,
   steamId: string
 ): Promise<void> {
-  const url = new URL(webapiServerUrl);
-  url.pathname = `bans/${steamId}`;
+  const url = appendPath(webapiServerUrl, `bans/${steamId}`);
 
-  const response = await fetch(url.toString(), {
+  const response = await fetch(url, {
     method: "DELETE",
     headers: {
-      Authorization: authorization
-    }
+      Authorization: authorization,
+    },
   });
   if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
@@ -275,14 +252,13 @@ export async function getChat(
   webapiServerUrl: string,
   authorization: string
 ): Promise<ChatPayload[]> {
-  const url = new URL(webapiServerUrl);
-  url.pathname = "chat";
+  const url = appendPath(webapiServerUrl, "chat");
 
-  const response = await fetch(url.toString(), {
+  const response = await fetch(url, {
     method: "GET",
     headers: {
-      Authorization: authorization
-    }
+      Authorization: authorization,
+    },
   });
   if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
@@ -297,14 +273,13 @@ export async function getThing(
   authorization: string,
   referenceId: string
 ): Promise<AnyThingPayload> {
-  const url = new URL(webapiServerUrl);
-  url.pathname = `things/${referenceId}`;
+  const url = appendPath(webapiServerUrl, `things/${referenceId}`);
 
   const response = await fetch(url.toString(), {
     method: "GET",
     headers: {
-      Authorization: authorization
-    }
+      Authorization: authorization,
+    },
   });
   if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
@@ -320,15 +295,14 @@ export async function setThing(
   referenceId: string,
   payload: Partial<ThingPayload>
 ): Promise<AnyThingPayload> {
-  const url = new URL(webapiServerUrl);
-  url.pathname = `things/${referenceId}`;
+  const url = appendPath(webapiServerUrl, `things/${referenceId}`);
 
-  const response = await fetch(url.toString(), {
+  const response = await fetch(url, {
     method: "POST",
     headers: {
-      Authorization: authorization
+      Authorization: authorization,
     },
-    body: JSON.stringify(payload)
+    body: JSON.stringify(payload),
   });
   if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
@@ -342,14 +316,13 @@ export async function getDevices(
   webapiServerUrl: string,
   authorization: string
 ): Promise<DevicePayload[]> {
-  const url = new URL(webapiServerUrl);
-  url.pathname = "devices";
+  const url = appendPath(webapiServerUrl, "devices");
 
-  const response = await fetch(url.toString(), {
+  const response = await fetch(url, {
     method: "GET",
     headers: {
-      Authorization: authorization
-    }
+      Authorization: authorization,
+    },
   });
   if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
@@ -364,14 +337,13 @@ export async function getDevice(
   authorization: string,
   referenceId: string
 ): Promise<DevicePayload> {
-  const url = new URL(webapiServerUrl);
-  url.pathname = `devices/${referenceId}`;
+  const url = appendPath(webapiServerUrl, `devices/${referenceId}`);
 
-  const response = await fetch(url.toString(), {
+  const response = await fetch(url, {
     method: "GET",
     headers: {
-      Authorization: authorization
-    }
+      Authorization: authorization,
+    },
   });
   if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
@@ -387,15 +359,14 @@ export async function setDevice(
   referenceId: string,
   body: Partial<DevicePayload>
 ): Promise<DevicePayload> {
-  const url = new URL(webapiServerUrl);
-  url.pathname = `devices/${referenceId}`;
+  const url = appendPath(webapiServerUrl, `devices/${referenceId}`);
 
-  const response = await fetch(url.toString(), {
+  const response = await fetch(url, {
     method: "POST",
     headers: {
-      Authorization: authorization
+      Authorization: authorization,
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   });
   if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
@@ -412,15 +383,17 @@ export async function setDeviceLogic(
   logicType: string,
   logicValue: number
 ): Promise<LogicValuePayload> {
-  const url = new URL(webapiServerUrl);
-  url.pathname = `devices/${referenceId}/logicValues/${logicType}`;
+  const url = appendPath(
+    webapiServerUrl,
+    `devices/${referenceId}/logicValues/${logicType}`
+  );
 
-  const response = await fetch(url.toString(), {
+  const response = await fetch(url, {
     method: "POST",
     headers: {
-      Authorization: authorization
+      Authorization: authorization,
     },
-    body: JSON.stringify({ value: logicValue })
+    body: JSON.stringify({ value: logicValue }),
   });
   if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
@@ -434,14 +407,13 @@ export async function getItems(
   webapiServerUrl: string,
   authorization: string
 ): Promise<ItemPayload[]> {
-  const url = new URL(webapiServerUrl);
-  url.pathname = "items";
+  const url = appendPath(webapiServerUrl, "items");
 
-  const response = await fetch(url.toString(), {
+  const response = await fetch(url, {
     method: "GET",
     headers: {
-      Authorization: authorization
-    }
+      Authorization: authorization,
+    },
   });
   if (response.status !== HttpStatusCodes.OK) {
     throw new WebAPIError(response.status, response.statusText);
@@ -449,4 +421,21 @@ export async function getItems(
 
   const result: ItemPayload[] = await response.json();
   return result;
+}
+
+function appendPath(url: string, path: string) {
+  if (url.endsWith("/")) {
+    url = url.substr(0, url.length - 1);
+  }
+  if (path.startsWith("/")) {
+    path = path.substr(1);
+  }
+
+  return `${url}/${path}`;
+}
+
+function setUrlSearch(url: string, search: string) {
+  var parsed = new URL(url);
+  parsed.search = search;
+  return parsed.toString();
 }

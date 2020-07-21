@@ -5,29 +5,29 @@ import { Theme, makeStyles } from "@material-ui/core/styles";
 
 import Typography from "@material-ui/core/Typography";
 
-import { UseServer } from "@/services/webapi/hooks/useServer";
+import { UseSettings } from "@/services/webapi/hooks/useSettings";
 import { PopulatedApiData } from "@/services/webapi/hooks/useApiData";
 
 import CommitTextField from "@/components/CommitTextField";
 
-export type ServerDataContentProps = PopulatedApiData<UseServer>;
+export type SettingsContentProps = PopulatedApiData<UseSettings>;
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    padding: theme.spacing()
+    padding: theme.spacing(),
   },
   section: {
-    padding: theme.spacing()
-  }
+    padding: theme.spacing(),
+  },
 }));
 
-const ServerDataContent: React.FC<ServerDataContentProps> = ({
+const SettingsContent: React.FC<SettingsContentProps> = ({
   name,
   setName,
   mapName,
   maxPlayers,
   password,
-  setPassword
+  setPassword,
 }) => {
   const { t } = useTranslation();
   const classes = useStyles();
@@ -36,7 +36,7 @@ const ServerDataContent: React.FC<ServerDataContentProps> = ({
       <div className={classes.section}>
         <div>
           <Typography variant="caption">
-            {t("pages.server.server_name")}
+            {t("pages.settings.server_name")}
           </Typography>
         </div>
         <div>
@@ -46,7 +46,7 @@ const ServerDataContent: React.FC<ServerDataContentProps> = ({
       <div className={classes.section}>
         <div>
           <Typography variant="caption">
-            {t("pages.server.password")}
+            {t("pages.settings.password")}
           </Typography>
         </div>
         <div>
@@ -54,12 +54,14 @@ const ServerDataContent: React.FC<ServerDataContentProps> = ({
         </div>
       </div>
       <div className={classes.section}>
-        <Typography variant="caption">{t("pages.server.map_name")}</Typography>
+        <Typography variant="caption">
+          {t("pages.settings.map_name")}
+        </Typography>
         <Typography variant="h6">{mapName}</Typography>
       </div>
       <div className={classes.section}>
         <Typography variant="caption">
-          {t("pages.server.max_players")}
+          {t("pages.settings.max_players")}
         </Typography>
         <Typography variant="h6">{maxPlayers}</Typography>
       </div>
@@ -67,4 +69,4 @@ const ServerDataContent: React.FC<ServerDataContentProps> = ({
   );
 };
 
-export default ServerDataContent;
+export default SettingsContent;

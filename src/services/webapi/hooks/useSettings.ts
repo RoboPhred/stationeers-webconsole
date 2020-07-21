@@ -1,21 +1,21 @@
 import * as React from "react";
 
-import { ServerPayload } from "../payloads";
-import { getServer, setServer as apiPostServer } from "../api";
+import { SettingsPayload } from "../payloads";
+import { getSettings, setSettings as apiPostSettings } from "../api";
 
 import { useApiCall } from "./useApiCall";
 import { UseApiData, useApiData } from "./useApiData";
 
-export interface UseServerFunctions {
+export interface UseSettingsFunctions {
   setName(name: string): void;
   setPassword(password: string): void;
 }
-export type UseServer = UseApiData<ServerPayload & UseServerFunctions>;
+export type UseSettings = UseApiData<SettingsPayload & UseSettingsFunctions>;
 
-export function useServer(): UseServer {
-  const postServer = useApiCall(apiPostServer);
+export function useSettings(): UseSettings {
+  const postSettings = useApiCall(apiPostSettings);
 
-  const result = useApiData(getServer) as UseServer;
+  const result = useApiData(getSettings) as UseSettings;
   const { refresh } = result;
 
   const setName = React.useCallback(
@@ -23,16 +23,16 @@ export function useServer(): UseServer {
       if (!name || !name.length) {
         return;
       }
-      postServer({ name }).then(refresh);
+      postSettings({ name }).then(refresh);
     },
-    [postServer, refresh]
+    [postSettings, refresh]
   );
 
   const setPassword = React.useCallback(
     (password: string) => {
-      postServer({ password }).then(refresh);
+      postSettings({ password }).then(refresh);
     },
-    [postServer, refresh]
+    [postSettings, refresh]
   );
 
   if (result.isLoaded) {
