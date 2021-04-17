@@ -45,7 +45,7 @@ export type AuthenticationResult =
 export async function authenticate(
   webapiServerUrl: string
 ): Promise<AuthenticationResult> {
-  const url = appendPath(webapiServerUrl, "login");
+  const url = appendPath(webapiServerUrl, "login/steam");
 
   const response = await fetch(url, { method: "GET" });
 
@@ -80,7 +80,7 @@ export async function authenticateOpenID(
   webapiServerUrl: string,
   openIdQuery: string
 ): Promise<JwtAutenticationResult> {
-  let url = appendPath(webapiServerUrl, "login");
+  let url = appendPath(webapiServerUrl, "login/steam");
   url = setUrlSearch(url, openIdQuery);
 
   const response = await fetch(url, {
