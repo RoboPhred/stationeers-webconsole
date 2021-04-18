@@ -79,7 +79,8 @@
       "access_control": "Access Control"
     },
     "items": {
-      "title": "Items"
+      "title": "Items",
+      "item_name": "Item Name"
     }
   },
   "steam": {
@@ -88,6 +89,7 @@
   "things": {
     "prefab_type": "Prefab Type",
     "health": "Health",
+    "quantity": "Quantity",
     "filter_by_name": "Filter by Name",
     "filter_by_type": "Filter by Type"
   },

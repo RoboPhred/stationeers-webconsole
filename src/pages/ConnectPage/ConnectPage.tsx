@@ -52,7 +52,7 @@ const ConnectPage: React.FC = () => {
 
   return (
     <PageContainer title={t("pages.connect.title")}>
-      <RedirectIfLoggedIn to="/login" />
+      <RedirectIfLoggedIn to="/settings" />
       <div className={classes.root}>
         {!configuredAddress && (
           <div className={classes.section}>
