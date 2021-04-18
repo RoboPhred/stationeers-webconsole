@@ -29,7 +29,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: "100%",
     height: "100%",
     padding: theme.spacing(),
-    overflow: "auto",
+  },
+  tableContainer: {
+    height: "100%",
   },
 }));
 
@@ -78,6 +80,15 @@ const DevicesPageContent: React.FC<DevicesPageContentProps> = ({ devices }) => {
     }
   }, [order, orderBy]);
 
+  const onSortByHealth = React.useCallback(() => {
+    if (orderBy !== "health") {
+      setOrderBy("health");
+      setOrder(Order.Ascending);
+    } else {
+      setOrder(flipOrder(order));
+    }
+  }, [order, orderBy]);
+
   const lowerCaseNameFilter = deviceNameFilter.toLowerCase();
   const lowerCasePrefabFilter = devicePrefabFilter.toLowerCase();
 
@@ -106,7 +117,7 @@ const DevicesPageContent: React.FC<DevicesPageContentProps> = ({ devices }) => {
 
   return (
     <div className={classes.root}>
-      <TableContainer component={Paper}>
+      <TableContainer className={classes.tableContainer} component={Paper}>
         <Table stickyHeader>
           <TableHead>
             <TableRow>
@@ -144,6 +155,15 @@ const DevicesPageContent: React.FC<DevicesPageContentProps> = ({ devices }) => {
                   />
                 </div>
               </TableCell>
+              <TableCell>
+                <TableSortLabel
+                  active={orderBy === "health"}
+                  direction={orderBy === "health" ? order : "asc"}
+                  onClick={onSortByHealth}
+                >
+                  {t("things.health")}
+                </TableSortLabel>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -158,6 +178,7 @@ const DevicesPageContent: React.FC<DevicesPageContentProps> = ({ devices }) => {
                   </Link>
                 </TableCell>
                 <TableCell>{device.prefabName}</TableCell>
+                <TableCell>{device.health}</TableCell>
               </TableRow>
             ))}
           </TableBody>

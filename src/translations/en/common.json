@@ -87,6 +87,7 @@
   },
   "things": {
     "prefab_type": "Prefab Type",
+    "health": "Health",
     "filter_by_name": "Filter by Name",
     "filter_by_type": "Filter by Type"
   },
