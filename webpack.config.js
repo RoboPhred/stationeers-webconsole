@@ -60,7 +60,7 @@ module.exports = {
       {
         enforce: "pre",
         test: /\.(jsx?|tsx?)$/,
-        loader: "source-map-loader",
+        use: "source-map-loader",
         include: [/src\/.+\.tsx?/],
       },
 
@@ -75,7 +75,7 @@ module.exports = {
 
       {
         test: /\.css$/,
-        loader: ["style-loader", "css-loader"],
+        use: ["style-loader", "css-loader"],
       },
 
       {
@@ -83,7 +83,7 @@ module.exports = {
         use: {
           loader: "url-loader",
           options: {
-            name: "fonts/[hash].[ext]",
+            name: "fonts/[contenthash].[ext]",
             limit: 5000,
             mimetype: "application/font-woff",
           },
@@ -94,7 +94,7 @@ module.exports = {
         use: {
           loader: "file-loader",
           options: {
-            name: "fonts/[hash].[ext]",
+            name: "fonts/[contenthash].[ext]",
           },
         },
       },
@@ -103,7 +103,7 @@ module.exports = {
         test: /\.png/,
         loader: "file-loader",
         options: {
-          name: "images/[hash].[ext]",
+          name: "images/[contenthash].[ext]",
         },
       },
 
