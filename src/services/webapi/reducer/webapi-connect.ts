@@ -1,9 +1,9 @@
-import { isLoginAction } from "@/actions/login";
+import { isWebapiConnectAction } from "@/actions/webapi-connect";
 
 import { createWebapiReducer } from "../utils";
 
 export default createWebapiReducer((state, action) => {
-  if (!isLoginAction(action)) {
+  if (!isWebapiConnectAction(action)) {
     return state;
   }
 
@@ -15,6 +15,6 @@ export default createWebapiReducer((state, action) => {
 
   return {
     ...state,
-    serverAddress,
+    serverHost: serverAddress,
   };
 });

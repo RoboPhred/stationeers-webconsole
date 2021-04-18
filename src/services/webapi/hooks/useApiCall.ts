@@ -2,7 +2,7 @@ import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import HttpStatusCodes from "http-status-codes";
 
-import { invalidateAuthentication } from "@/actions/invalidate-authentication";
+import { webapiAuthenticationInvalidated } from "@/actions/webapi-authentication-invalidated";
 
 import { serverAddressSelector } from "../selectors/server";
 import { authorizationSelector } from "../selectors/authorization";
@@ -19,12 +19,12 @@ export function useApiCall<TResult, TArgs extends any[]>(
   return React.useCallback(
     (...args) => {
       if (!serverAddress || !authorization) {
-        dispatch(invalidateAuthentication());
+        dispatch(webapiAuthenticationInvalidated());
         throw new WebAPIError(HttpStatusCodes.UNAUTHORIZED, "Unauthorized.");
       }
-      return apiCall(serverAddress, authorization, ...args).catch(e => {
+      return apiCall(serverAddress, authorization, ...args).catch((e) => {
         if (e.statusCode === HttpStatusCodes.UNAUTHORIZED) {
-          dispatch(invalidateAuthentication());
+          dispatch(webapiAuthenticationInvalidated());
         }
         throw e;
       });

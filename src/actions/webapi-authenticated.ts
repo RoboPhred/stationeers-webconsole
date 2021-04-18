@@ -1,6 +1,6 @@
 import { AnyAction } from "redux";
 
-export const WEBAPI_AUTHENTICATED_ACTION = "webapi-authenticated" as const;
+export const WEBAPI_AUTHENTICATED_ACTION = "@webapi/authenticated" as const;
 export const webapiAuthenticated = (
   serverAddress: string,
   authorization: string

@@ -9,12 +9,14 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 
-import { login } from "@/actions/login";
+import { serverHostSelector } from "@/services/webapi/selectors/server";
+import { useLoginMethods } from "@/services/webapi/hooks/useLoginMethods";
 
-import { configuredServerAddressSelector } from "@/services/config/selectors/server";
+import { webapiLogin } from "@/actions/webapi-login";
 
 import PageContainer from "@/components/PageContainer";
 import RedirectIfLoggedIn from "@/components/RedirectIfLoggedIn";
+import RequireServer from "@/components/RequireServer";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -26,52 +28,96 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const LoginPage: React.FC = () => {
-  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const classes = useStyles();
 
-  const configuredAddress = useSelector(configuredServerAddressSelector);
-  const [userAddress, setUserAddress] = React.useState<string>("");
-
-  const onLoginClick = React.useCallback(() => {
-    const address = configuredAddress ?? userAddress;
-    if (address.length === 0) {
-      return;
-    }
-    dispatch(login(address));
-  }, [userAddress]);
-
-  const onUserAddressChange = React.useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setUserAddress(e.target.value);
-    },
-    []
-  );
+  const loginMethods = useLoginMethods();
 
   return (
     <PageContainer title={t("pages.login.title")}>
+      <RequireServer />
       <RedirectIfLoggedIn to="/settings" />
-      <div className={classes.root}>
-        {!configuredAddress && (
-          <div className={classes.section}>
-            <div>
-              <Typography variant="caption">
-                {t("pages.login.server_address")}
-              </Typography>
-            </div>
-            <div>
-              <TextField
-                error={userAddress.length === 0}
-                value={userAddress}
-                onChange={onUserAddressChange}
-              />
-            </div>
-          </div>
-        )}
-        <Button onClick={onLoginClick}>{t("pages.login.login_button")}</Button>
-      </div>
+      {!loginMethods.isLoaded && <LoginPageQuerying />}
+      {loginMethods.isLoaded && (
+        <LoginPageContent loginMethods={loginMethods.methods} />
+      )}
     </PageContainer>
   );
 };
 
+const LoginPageQuerying: React.FC = () => {
+  const classes = useStyles();
+  const { t } = useTranslation();
+  return (
+    <div className={classes.root}>
+      <Typography variant="h4">{t("pages.login.querying_server")}</Typography>
+    </div>
+  );
+};
+
 export default LoginPage;
+
+const LoginPageContent: React.FC<{ loginMethods: string[] }> = ({
+  loginMethods,
+}) => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const classes = useStyles();
+  const serverHost = useSelector(serverHostSelector);
+
+  const [password, setPassword] = React.useState<string>("");
+
+  const onPasswordLoginClick = React.useCallback(() => {
+    dispatch(webapiLogin({ method: "password", password }));
+  }, [password]);
+
+  const onPasswordChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPassword(e.target.value);
+    },
+    []
+  );
+
+  const supportsSteam = loginMethods.indexOf("steam") !== -1;
+  const supportsPassword = loginMethods.indexOf("password") !== -1;
+
+  return (
+    <div className={classes.root}>
+      <div className={classes.section}>
+        <Typography variant="h5">
+          {t("pages.login.prompt", { host: serverHost })}
+        </Typography>
+      </div>
+      {supportsSteam && (
+        <div className={classes.section}>
+          <div>
+            <Typography variant="h5">
+              {t("pages.login.steam_supported")}
+            </Typography>
+          </div>
+          <Button onClick={onPasswordLoginClick}>
+            {t("pages.login.verbs.login_steam_titlecase")}
+          </Button>
+        </div>
+      )}
+      {supportsPassword && (
+        <div className={classes.section}>
+          <div>
+            <Typography variant="caption">
+              {t("pages.login.password")}
+            </Typography>
+          </div>
+          <div>
+            <TextField
+              error={password.length === 0}
+              value={password}
+              onChange={onPasswordChange}
+            />
+          </div>
+          <Button onClick={onPasswordLoginClick}>
+            {t("pages.login.verbs.login_password_titlecase")}
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+};

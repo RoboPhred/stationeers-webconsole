@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useDevices } from "@/services/webapi/hooks/useDevices";
 
 import PageContainer from "@/components/PageContainer";
-import RequireLogin from "@/components/RequireWebapiAuthorization";
+import RequireAuthorization from "@/components/RequireAuthorization";
 import ErrorPageContent from "@/components/ErrorPageContent";
 import LoadingPageContent from "@/components/LoadingPageContent";
 
@@ -25,7 +25,7 @@ const DevicesPage: React.FC = () => {
 
   return (
     <PageContainer title={t("pages.devices.title")}>
-      <RequireLogin />
+      <RequireAuthorization />
       {content}
     </PageContainer>
   );

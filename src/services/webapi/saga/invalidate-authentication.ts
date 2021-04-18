@@ -2,11 +2,11 @@ import { takeEvery, put } from "redux-saga/effects";
 
 import { push } from "connected-react-router";
 
-import { INVALIDATE_AUTHENTICATION_ACTION } from "@/actions/invalidate-authentication";
+import { WEBAPI_AUTHENTICATION_INVALIDATED_ACTION } from "@/actions/webapi-authentication-invalidated";
 
 export default function* invalidateAuthenticationSaga() {
   yield takeEvery(
-    INVALIDATE_AUTHENTICATION_ACTION,
+    WEBAPI_AUTHENTICATION_INVALIDATED_ACTION,
     handleInvalidateAuthentication
   );
 }

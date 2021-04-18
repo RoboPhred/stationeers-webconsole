@@ -1,11 +1,13 @@
 export interface WebAPIState {
-  serverAddress: string | null;
+  serverHost: string | null;
+  apiErrorMessage: string | null;
   userSteamId: string | null;
   userAuthorization: string | null;
 }
 
 const _defaultWebAPIState: WebAPIState = {
-  serverAddress: null,
+  serverHost: null,
+  apiErrorMessage: null,
   userSteamId: null,
   userAuthorization: null,
 };

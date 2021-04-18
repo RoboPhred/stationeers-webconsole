@@ -11,7 +11,7 @@ const initReducer = createWebapiReducer((state, action) => {
   const authorization = getStoredAuthorization();
   return {
     ...state,
-    serverAddress: null,
+    serverHost: null,
     userAuthorization: authorization,
   };
 });

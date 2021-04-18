@@ -4,6 +4,8 @@ import history from "@/history";
 
 import { AUTHENTICATION_CALLBACK_ROUTE } from "@/routes";
 
+import { rootHost, rootUrl } from "@/env";
+
 import { WebAPIError } from "./errors";
 import {
   SettingsPayload,
@@ -23,19 +25,38 @@ export type ApiFunction<TResult, TArgs extends any[]> = (
   ...args: TArgs
 ) => Promise<TResult>;
 
+export async function getLoginMethods(
+  webapiServerUrl: string
+): Promise<string[]> {
+  const url = appendPath(webapiServerUrl, "api/login");
+
+  const response = await fetch(url, { method: "GET" });
+
+  if (response.status !== HttpStatusCodes.OK) {
+    throw new WebAPIError(response.status, response.statusText);
+  }
+
+  const body = await response.json();
+  if (!Array.isArray(body.loginMethods)) {
+    throw new Error("Unexpected response from api/login");
+  }
+
+  return body.loginMethods;
+}
+
 export function adjustOpenIDReturnTo(
   openIdSigninUrl: string,
   serverAddress: string
 ): string {
   const returnTo =
-    PUBLIC_URL +
+    rootUrl +
     history.createHref({
       pathname: AUTHENTICATION_CALLBACK_ROUTE,
       search: `server-address=${encodeURIComponent(serverAddress)}`,
     });
 
   var signinUrl = new URL(openIdSigninUrl);
-  signinUrl.searchParams.set("openid.realm", PUBLIC_URL);
+  signinUrl.searchParams.set("openid.realm", rootHost);
   signinUrl.searchParams.set("openid.return_to", returnTo.toString());
 
   return signinUrl.toString();

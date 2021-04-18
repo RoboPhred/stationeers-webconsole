@@ -1,12 +1,28 @@
 import { AppState } from "@/store";
 
-import { configuredServerAddressSelector } from "@/services/config/selectors/server";
+import { configuredServerHostSelector } from "@/services/config/selectors/server";
 
-export const serverAddressSelector = (state: AppState) => {
-  const { serverAddress } = state.services.webApi;
-  if (serverAddress) {
-    return serverAddress;
+export const serverHostSelector = (state: AppState) => {
+  const { serverHost } = state.services.webApi;
+  if (serverHost) {
+    return serverHost;
   }
 
-  return configuredServerAddressSelector(state);
+  return configuredServerHostSelector(state);
 };
+
+export const serverAddressSelector = (state: AppState) => {
+  let host = serverHostSelector(state);
+  if (!host) {
+    return null;
+  }
+
+  if (!host.startsWith("http://") && !host.startsWith("https://")) {
+    host = "http://" + host;
+  }
+
+  return host;
+};
+
+export const hasServerSelector = (state: AppState) =>
+  serverAddressSelector(state) != null;

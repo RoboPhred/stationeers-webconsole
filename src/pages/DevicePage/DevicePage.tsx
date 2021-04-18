@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { useDevice } from "@/services/webapi/hooks/useDevice";
 
-import RequireLogin from "@/components/RequireWebapiAuthorization";
+import RequireAuthorization from "@/components/RequireAuthorization";
 import PageContainer from "@/components/PageContainer";
 import ErrorPageContent from "@/components/ErrorPageContent";
 import LoadingPageContent from "@/components/LoadingPageContent";
@@ -19,8 +19,8 @@ export type DevicePageProps = RouteComponentProps<DevicePageParams>;
 
 const DevicePage: React.FC<DevicePageProps> = ({
   match: {
-    params: { referenceId }
-  }
+    params: { referenceId },
+  },
 }) => {
   const { t } = useTranslation();
   const deviceData = useDevice(referenceId);
@@ -28,7 +28,7 @@ const DevicePage: React.FC<DevicePageProps> = ({
   const title = deviceData.isLoaded
     ? t("pages.device.title_named", {
         displayName: deviceData.displayName,
-        referenceId: deviceData.referenceId
+        referenceId: deviceData.referenceId,
       })
     : t("pages.device.title");
 
@@ -43,7 +43,7 @@ const DevicePage: React.FC<DevicePageProps> = ({
 
   return (
     <PageContainer back title={title}>
-      <RequireLogin />
+      <RequireAuthorization />
       {content}
     </PageContainer>
   );

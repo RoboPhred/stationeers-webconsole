@@ -14,7 +14,7 @@ export default createWebapiReducer((state, action) => {
 
   return {
     ...state,
-    serverAddress,
+    serverHost: serverAddress,
     userAuthorization: authorization,
   };
 });

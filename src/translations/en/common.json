@@ -1,9 +1,22 @@
 {
   "pages": {
+    "connect": {
+      "title": "Connect",
+      "server_address": "Server Address",
+      "verbs": {
+        "connect_titlecase": "Connect"
+      }
+    },
     "login": {
       "title": "Login",
-      "server_address": "Server Address",
-      "login_button": "Login"
+      "querying_server": "Checking server login methods...",
+      "prompt": "Logging in to {{host}}",
+      "steam_supported": "This server supports logging in with steam.",
+      "password": "Password",
+      "verbs": {
+        "login_password_titlecase": "Login with Password",
+        "login_steam_titlecase": "Login with Steam"
+      }
     },
     "not-authorized": {
       "title": "Not Authorized",
@@ -73,7 +86,9 @@
     "steam_id": "Steam ID"
   },
   "things": {
-    "prefab_type": "Prefab Type"
+    "prefab_type": "Prefab Type",
+    "filter_by_name": "Filter by Name",
+    "filter_by_type": "Filter by Type"
   },
   "verbs": {
     "loading": "Loading",

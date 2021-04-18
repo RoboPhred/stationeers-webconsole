@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useSettings } from "@/services/webapi/hooks/useSettings";
 
 import PageContainer from "@/components/PageContainer";
-import RequireLogin from "@/components/RequireWebapiAuthorization";
+import RequireAuthorization from "@/components/RequireAuthorization";
 import ErrorPageContent from "@/components/ErrorPageContent";
 import LoadingPageContent from "@/components/LoadingPageContent";
 
@@ -25,7 +25,7 @@ const SettingsPage: React.FC = () => {
 
   return (
     <PageContainer title={t("pages.settings.title")}>
-      <RequireLogin />
+      <RequireAuthorization />
       {content}
     </PageContainer>
   );

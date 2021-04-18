@@ -1,10 +1,10 @@
-import { isInvalidateAuthenticationAction } from "@/actions/invalidate-authentication";
+import { isWebapiAuthenticationInvalidatedAction } from "@/actions/webapi-authentication-invalidated";
 
 import { createWebapiReducer } from "../utils";
 import { storeAuthorization } from "../localstorage";
 
 const invalidateAuthenticationReducer = createWebapiReducer((state, action) => {
-  if (!isInvalidateAuthenticationAction(action)) {
+  if (!isWebapiAuthenticationInvalidatedAction(action)) {
     return state;
   }
 
@@ -12,7 +12,7 @@ const invalidateAuthenticationReducer = createWebapiReducer((state, action) => {
 
   return {
     ...state,
-    userAuthorization: null
+    userAuthorization: null,
   };
 });
 export default invalidateAuthenticationReducer;

@@ -1,14 +1,14 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
-import { isProd } from "@/runtime-env";
+import { isProd } from "@/env";
 
 const languageDetector = {
   type: "languageDetector" as const,
   async: true,
   detect: (cb: Function) => cb("en"),
   init: () => {},
-  cacheUserLanguage: () => {}
+  cacheUserLanguage: () => {},
 };
 
 export const initPromise = i18n
@@ -22,20 +22,20 @@ export const initPromise = i18n
 
     resources: {
       en: {
-        common: require("@/translations/en/common.json")
-      }
+        common: require("@/translations/en/common.json"),
+      },
     },
 
     debug: !isProd,
 
     interpolation: {
       // React escapes values for us.
-      escapeValue: false
+      escapeValue: false,
     },
 
     react: {
-      wait: true
-    }
+      wait: true,
+    },
   });
 
 export default i18n;

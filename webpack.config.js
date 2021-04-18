@@ -14,14 +14,9 @@ const PATHS = {
   appSrc: path.resolve(root, "./src"),
   appDist: path.resolve(root, "./dist"),
   nodeModules: path.resolve(root, "./node_modules"),
-  changelog: path.resolve(root, "./CHANGELOG.md"),
 };
 
-const PUBLIC_URL_HOST = isDev
-  ? "https://localhost:8080"
-  : "https://robophred.github.com";
-const PUBLIC_URL_PATH = isDev ? "/" : "/stationeers-webportal/";
-const PUBLIC_URL = `${PUBLIC_URL_HOST}${PUBLIC_URL_PATH}`;
+const PUBLIC_PATH = isDev ? "/" : "/stationeers-webportal/";
 
 console.log("Webpack build", isDev ? "[development]" : "[production]");
 
@@ -42,16 +37,15 @@ module.exports = {
   },
 
   output: {
-    filename: "[name].[hash].bundle.js",
+    filename: "[name].[contenthash].bundle.js",
     path: PATHS.appBuild,
-    publicPath: PUBLIC_URL_PATH,
+    publicPath: PUBLIC_PATH,
   },
 
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json"],
     alias: {
       "@": PATHS.appSrc,
-      "@changelog": PATHS.changelog,
     },
   },
 
@@ -115,10 +109,6 @@ module.exports = {
   },
 
   plugins: [
-    new webpack.DefinePlugin({
-      PUBLIC_URL: JSON.stringify(PUBLIC_URL),
-    }),
-
     new HtmlWebpackPlugin({
       inject: true,
       template: path.resolve(PATHS.appSrc, "index.ejs"),

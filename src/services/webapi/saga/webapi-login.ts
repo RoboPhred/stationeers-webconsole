@@ -2,20 +2,21 @@ import { takeEvery, put, select, call } from "redux-saga/effects";
 import HttpStatusCodes from "http-status-codes";
 import { replace } from "connected-react-router";
 
-import { LOGIN_ACTION, LoginAction } from "@/actions/login";
+import { WEBAPI_LOGIN_ACTION, WebapiLoginAction } from "@/actions/webapi-login";
 import { webapiAuthenticated } from "@/actions/webapi-authenticated";
+import { webapiError } from "@/actions/webapi-error";
 
 import { serverAddressSelector } from "../selectors/server";
 import { authenticate, adjustOpenIDReturnTo } from "../api";
 
-export default function* loginSaga() {
-  yield takeEvery(LOGIN_ACTION, handleLoginAction);
+export default function* webapiLoginSaga() {
+  yield takeEvery(WEBAPI_LOGIN_ACTION, handleWebapiLogin);
 }
 
-function* handleLoginAction(action: LoginAction) {
+function* handleWebapiLogin(action: WebapiLoginAction) {
   const serverAddress: string | null = yield select(serverAddressSelector);
   if (!serverAddress) {
-    yield put(replace("/connection-error"));
+    yield put(replace("/connect"));
     return;
   }
 
@@ -37,6 +38,8 @@ function* handleLoginAction(action: LoginAction) {
     }
 
     // Might want to show the user the error message?
-    yield put(replace("/connection-error"));
+    yield put(
+      webapiError("An error occurred while communicating with the server.")
+    );
   }
 }

@@ -8,6 +8,7 @@ import {
   SteamAuthenticatedAction,
 } from "@/actions/steam-authenticated";
 import { webapiAuthenticated } from "@/actions/webapi-authenticated";
+import { webapiError } from "@/actions/webapi-error";
 
 import { authenticateOpenID } from "../api";
 
@@ -21,10 +22,14 @@ function* handleSteamAuthenticated(action: SteamAuthenticatedAction) {
   try {
     const parsed = parseQueryString(queryString);
     const serverAddress = parsed["server-address"];
-    if (typeof serverAddress !== "string") {
-      throw new Error(
-        "Steam authentication response did not include a target server address."
+    if (typeof serverAddress !== "string" || serverAddress === "") {
+      yield put(
+        webapiError(
+          "Steam authentication response did not include a target server address."
+        )
       );
+      yield put(replace("/login"));
+      return;
     }
 
     const payload: PromiseReturnType<typeof authenticateOpenID> = yield call(
@@ -40,6 +45,8 @@ function* handleSteamAuthenticated(action: SteamAuthenticatedAction) {
     }
 
     // Might want to show the user the error message?
-    yield put(replace("/connection-error"));
+    yield put(
+      webapiError("An error occurred while communicating with the server.")
+    );
   }
 }
