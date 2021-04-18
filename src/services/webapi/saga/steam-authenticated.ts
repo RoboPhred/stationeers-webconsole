@@ -1,6 +1,7 @@
 import { takeEvery, put, call } from "redux-saga/effects";
 import { replace } from "connected-react-router";
 import HttpStatusCodes from "http-status-codes";
+import { parse as parseQueryString } from "query-string";
 
 import {
   STEAM_AUTHENTICATED_ACTION,
@@ -16,14 +17,22 @@ export default function* steamAuthenticatedSaga() {
 
 function* handleSteamAuthenticated(action: SteamAuthenticatedAction) {
   const { queryString } = action.payload;
-  const serverAddress = DEFAULT_WEBAPI_URL; // TODO: Get from configuration
+
   try {
+    const parsed = parseQueryString(queryString);
+    const serverAddress = parsed["server-address"];
+    if (typeof serverAddress !== "string") {
+      throw new Error(
+        "Steam authentication response did not include a target server address."
+      );
+    }
+
     const payload: PromiseReturnType<typeof authenticateOpenID> = yield call(
       authenticateOpenID,
       serverAddress,
       queryString
     );
-    yield put(webapiAuthenticated(payload.authorization));
+    yield put(webapiAuthenticated(serverAddress, payload.authorization));
   } catch (e) {
     if (e.statusCode === HttpStatusCodes.UNAUTHORIZED) {
       yield put(replace("/not-authorized"));

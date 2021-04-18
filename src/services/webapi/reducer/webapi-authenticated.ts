@@ -3,18 +3,18 @@ import { isWebapiAuthenticatedAction } from "@/actions/webapi-authenticated";
 import { createWebapiReducer } from "../utils";
 import { storeAuthorization } from "../localstorage";
 
-const setServerAddressReducer = createWebapiReducer((state, action) => {
+export default createWebapiReducer((state, action) => {
   if (!isWebapiAuthenticatedAction(action)) {
     return state;
   }
 
-  const { authorization } = action.payload;
+  const { serverAddress, authorization } = action.payload;
 
   storeAuthorization(authorization);
 
   return {
     ...state,
-    userAuthorization: authorization
+    serverAddress,
+    userAuthorization: authorization,
   };
 });
-export default setServerAddressReducer;

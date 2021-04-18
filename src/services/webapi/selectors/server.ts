@@ -1,5 +1,12 @@
-import { createWebapiSelector } from "../utils";
+import { AppState } from "@/store";
 
-export const serverAddressSelector = createWebapiSelector(
-  state => state.serverAddress
-);
+import { configuredServerAddressSelector } from "@/services/config/selectors/server";
+
+export const serverAddressSelector = (state: AppState) => {
+  const { serverAddress } = state.services.webApi;
+  if (serverAddress) {
+    return serverAddress;
+  }
+
+  return configuredServerAddressSelector(state);
+};

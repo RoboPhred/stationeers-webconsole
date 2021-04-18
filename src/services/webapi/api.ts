@@ -1,5 +1,7 @@
 import HttpStatusCodes from "http-status-codes";
 
+import history from "@/history";
+
 import { AUTHENTICATION_CALLBACK_ROUTE } from "@/routes";
 
 import { WebAPIError } from "./errors";
@@ -21,13 +23,21 @@ export type ApiFunction<TResult, TArgs extends any[]> = (
   ...args: TArgs
 ) => Promise<TResult>;
 
-export function adjustOpenIDReturnTo(openIdSigninUrl: string): string {
-  var returnTo = new URL(PUBLIC_URL);
-  returnTo.hash = AUTHENTICATION_CALLBACK_ROUTE;
+export function adjustOpenIDReturnTo(
+  openIdSigninUrl: string,
+  serverAddress: string
+): string {
+  const returnTo =
+    PUBLIC_URL +
+    history.createHref({
+      pathname: AUTHENTICATION_CALLBACK_ROUTE,
+      search: `server-address=${encodeURIComponent(serverAddress)}`,
+    });
 
   var signinUrl = new URL(openIdSigninUrl);
   signinUrl.searchParams.set("openid.realm", PUBLIC_URL);
   signinUrl.searchParams.set("openid.return_to", returnTo.toString());
+
   return signinUrl.toString();
 }
 
@@ -45,7 +55,7 @@ export type AuthenticationResult =
 export async function authenticate(
   webapiServerUrl: string
 ): Promise<AuthenticationResult> {
-  const url = appendPath(webapiServerUrl, "login/steam");
+  const url = appendPath(webapiServerUrl, "api/login/steam");
 
   const response = await fetch(url, { method: "GET" });
 
@@ -80,7 +90,7 @@ export async function authenticateOpenID(
   webapiServerUrl: string,
   openIdQuery: string
 ): Promise<JwtAutenticationResult> {
-  let url = appendPath(webapiServerUrl, "login/steam");
+  let url = appendPath(webapiServerUrl, "api/login/steam");
   url = setUrlSearch(url, openIdQuery);
 
   const response = await fetch(url, {
@@ -109,7 +119,7 @@ export async function getSettings(
   webapiServerUrl: string,
   authorization: string
 ): Promise<SettingsPayload> {
-  const url = appendPath(webapiServerUrl, "settings");
+  const url = appendPath(webapiServerUrl, "api/settings");
 
   const response = await fetch(url, {
     method: "GET",
@@ -130,7 +140,7 @@ export async function setSettings(
   authorization: string,
   body: Partial<SettingsPayload>
 ): Promise<SettingsPayload> {
-  const url = appendPath(webapiServerUrl, "settings");
+  const url = appendPath(webapiServerUrl, "api/settings");
 
   const response = await fetch(url, {
     method: "POST",
@@ -151,7 +161,7 @@ export async function getPlayers(
   webapiServerUrl: string,
   authorization: string
 ): Promise<PlayerPayload[]> {
-  const url = appendPath(webapiServerUrl, "players");
+  const url = appendPath(webapiServerUrl, "api/players");
 
   const response = await fetch(url, {
     method: "GET",
@@ -173,7 +183,7 @@ export async function kickPlayer(
   steamId: string,
   reason: string | null
 ): Promise<void> {
-  const url = appendPath(webapiServerUrl, `players/${steamId}/kick`);
+  const url = appendPath(webapiServerUrl, `api/players/${steamId}/kick`);
 
   const response = await fetch(url, {
     method: "POST",
@@ -195,7 +205,7 @@ export async function banPlayer(
   reason: string | null,
   hours: number = 1
 ): Promise<void> {
-  const url = appendPath(webapiServerUrl, `players/${steamId}/ban`);
+  const url = appendPath(webapiServerUrl, `api/players/${steamId}/ban`);
 
   const response = await fetch(url, {
     method: "POST",
@@ -214,7 +224,7 @@ export async function getBans(
   webapiServerUrl: string,
   authorization: string
 ): Promise<BanPayload[]> {
-  const url = appendPath(webapiServerUrl, `bans`);
+  const url = appendPath(webapiServerUrl, `api/bans`);
 
   const response = await fetch(url, {
     method: "GET",
@@ -233,7 +243,7 @@ export async function removeBan(
   authorization: string,
   steamId: string
 ): Promise<void> {
-  const url = appendPath(webapiServerUrl, `bans/${steamId}`);
+  const url = appendPath(webapiServerUrl, `api/bans/${steamId}`);
 
   const response = await fetch(url, {
     method: "DELETE",
@@ -251,7 +261,7 @@ export async function getChat(
   webapiServerUrl: string,
   authorization: string
 ): Promise<ChatPayload[]> {
-  const url = appendPath(webapiServerUrl, "chat");
+  const url = appendPath(webapiServerUrl, "api/chat");
 
   const response = await fetch(url, {
     method: "GET",
@@ -272,7 +282,7 @@ export async function getThing(
   authorization: string,
   referenceId: string
 ): Promise<AnyThingPayload> {
-  const url = appendPath(webapiServerUrl, `things/${referenceId}`);
+  const url = appendPath(webapiServerUrl, `api/things/${referenceId}`);
 
   const response = await fetch(url.toString(), {
     method: "GET",
@@ -294,7 +304,7 @@ export async function setThing(
   referenceId: string,
   payload: Partial<ThingPayload>
 ): Promise<AnyThingPayload> {
-  const url = appendPath(webapiServerUrl, `things/${referenceId}`);
+  const url = appendPath(webapiServerUrl, `api/things/${referenceId}`);
 
   const response = await fetch(url, {
     method: "POST",
@@ -315,7 +325,7 @@ export async function getDevices(
   webapiServerUrl: string,
   authorization: string
 ): Promise<DevicePayload[]> {
-  const url = appendPath(webapiServerUrl, "devices");
+  const url = appendPath(webapiServerUrl, "api/devices");
 
   const response = await fetch(url, {
     method: "GET",
@@ -336,7 +346,7 @@ export async function getDevice(
   authorization: string,
   referenceId: string
 ): Promise<DevicePayload> {
-  const url = appendPath(webapiServerUrl, `devices/${referenceId}`);
+  const url = appendPath(webapiServerUrl, `api/devices/${referenceId}`);
 
   const response = await fetch(url, {
     method: "GET",
@@ -358,7 +368,7 @@ export async function setDevice(
   referenceId: string,
   body: Partial<DevicePayload>
 ): Promise<DevicePayload> {
-  const url = appendPath(webapiServerUrl, `devices/${referenceId}`);
+  const url = appendPath(webapiServerUrl, `api/devices/${referenceId}`);
 
   const response = await fetch(url, {
     method: "POST",
@@ -384,7 +394,7 @@ export async function setDeviceLogic(
 ): Promise<LogicValuePayload> {
   const url = appendPath(
     webapiServerUrl,
-    `devices/${referenceId}/logicValues/${logicType}`
+    `api/devices/${referenceId}/logicValues/${logicType}`
   );
 
   const response = await fetch(url, {
@@ -406,7 +416,7 @@ export async function getItems(
   webapiServerUrl: string,
   authorization: string
 ): Promise<ItemPayload[]> {
-  const url = appendPath(webapiServerUrl, "items");
+  const url = appendPath(webapiServerUrl, "api/items");
 
   const response = await fetch(url, {
     method: "GET",

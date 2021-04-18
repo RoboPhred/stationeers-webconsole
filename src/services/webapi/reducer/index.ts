@@ -2,11 +2,13 @@ import { concatReducers } from "@/store/utils";
 
 import initReducer from "./init";
 import invalidateAuthenticationReducer from "./invalidate-authentication";
+import loginReducer from "./login";
 import webapiAuthenticatedReducer from "./webapi-authenticated";
 
 const webAPIReducer = concatReducers(
   initReducer,
   invalidateAuthenticationReducer,
+  loginReducer,
   webapiAuthenticatedReducer
 );
 

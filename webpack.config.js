@@ -23,8 +23,6 @@ const PUBLIC_URL_HOST = isDev
 const PUBLIC_URL_PATH = isDev ? "/" : "/stationeers-webportal/";
 const PUBLIC_URL = `${PUBLIC_URL_HOST}${PUBLIC_URL_PATH}`;
 
-const DEFAULT_WEBAPI_URL = "http://127.0.0.1:27016/api";
-
 console.log("Webpack build", isDev ? "[development]" : "[production]");
 
 module.exports = {
@@ -119,7 +117,6 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       PUBLIC_URL: JSON.stringify(PUBLIC_URL),
-      DEFAULT_WEBAPI_URL: JSON.stringify(DEFAULT_WEBAPI_URL),
     }),
 
     new HtmlWebpackPlugin({

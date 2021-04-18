@@ -2,6 +2,7 @@
   "pages": {
     "login": {
       "title": "Login",
+      "server_address": "Server Address",
       "login_button": "Login"
     },
     "not-authorized": {
